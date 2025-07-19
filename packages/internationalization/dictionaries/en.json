@@ -1,0 +1,11 @@
+{
+    "web": {
+        "header": {
+            "home": "Home",
+            "rider": "Rider",
+            "driver": "Driver",
+            "signIn": "Sign In",
+            "login": "Login"
+        }
+    }
+}
