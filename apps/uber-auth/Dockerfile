@@ -2,14 +2,23 @@ FROM node:18-alpine AS base
 
 # This Dockerfile is copy-pasted into our main docs at /docs/handbook/deploying-with-docker.
 # Make sure you update both files!
+WORKDIR /app
+
+ENV NODE_ENV=production
+ENV TURBO_TELEMETRY_DISABLED=1
+ENV PNPM_HOME=/pnpm
+ENV PATH=$PNPM_HOME:$PATH
+
+RUN corepack enable pnpm
+
 
 FROM base AS builder
 # Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
 RUN apk update
 RUN apk add --no-cache libc6-compat
 # Set working directory
-WORKDIR /app
-RUN npm install -g turbo
+
+RUN pnpm install --global turbo
 COPY . .
 RUN turbo prune uber-auth --docker
 
@@ -21,7 +30,7 @@ WORKDIR /app
 
 # First install the dependencies (as they change less often)
 COPY --from=builder /app/out/json/ .
-RUN npm install
+RUN pnpm install
 
 # Build the project
 COPY --from=builder /app/out/full/ .
@@ -33,7 +42,7 @@ COPY --from=builder /app/out/full/ .
 # ARG TURBO_TOKEN
 # ENV TURBO_TOKEN=$TURBO_TOKEN
 
-RUN npx turbo run build 
+RUN pnpm  build
 
 FROM base AS runner
 WORKDIR /app

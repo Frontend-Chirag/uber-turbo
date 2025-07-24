@@ -1,3 +1,9 @@
-**/.next
-node_modules/
-dist/
+node_modules
+apps/uber/node_modules
+apps/uber-auth/node_modules
+packages/**/node_modules
+gateway/node_modules
+services/**/node_modules
+npm-debug.log
+.git
+docker

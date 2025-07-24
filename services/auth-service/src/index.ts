@@ -1,6 +1,3 @@
-import { serve } from '@hono/node-server'
-import { Hono } from 'hono'
-import { cors } from 'hono/cors';
 import { AuthServiceService } from "@repo/proto/generated/auth.js";
 import { Server, ServerCredentials } from "@grpc/grpc-js"
 import { authHandlers } from './client.js';
