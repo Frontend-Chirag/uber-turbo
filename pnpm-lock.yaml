@@ -35,6 +35,9 @@ importers:
 
   apps/uber:
     dependencies:
+      '@repo/ui':
+        specifier: workspace:^
+        version: link:../../packages/ui
       next:
         specifier: 15.4.1
         version: 15.4.1(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -121,6 +124,9 @@ importers:
       '@hono/node-server':
         specifier: ^1.16.0
         version: 1.17.1(hono@4.8.5)
+      '@repo/proto':
+        specifier: workspace:*
+        version: link:../packages/proto
       hono:
         specifier: ^4.8.5
         version: 4.8.5
@@ -427,7 +433,11 @@ importers:
         specifier: ^15.3.5
         version: 15.4.1(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
 
-  packages/proto: {}
+  packages/proto:
+    devDependencies:
+      '@repo/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
 
   packages/seo:
     dependencies:
@@ -488,23 +498,48 @@ importers:
     dependencies:
       baseui:
         specifier: 0.0.0-next-ff2e443
-        version: 0.0.0-next-ff2e443(@types/react@19.1.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(styletron-react@6.1.1(react@19.1.0))
+        version: 0.0.0-next-ff2e443(@types/react@19.1.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styletron-react@6.1.1(react@18.3.1))
       react:
         specifier: ^18.0.0
-        version: 19.1.0
+        version: 18.3.1
       react-dom:
         specifier: ^18.0.0
-        version: 19.1.0(react@19.1.0)
+        version: 18.3.1(react@18.3.1)
       styletron-engine-monolithic:
         specifier: ^1.0.0
         version: 1.0.0
       styletron-react:
         specifier: ^6.1.1
-        version: 6.1.1(react@19.1.0)
+        version: 6.1.1(react@18.3.1)
     devDependencies:
       '@repo/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config
+
+  services/auth-service:
+    dependencies:
+      '@hono/node-server':
+        specifier: ^1.15.0
+        version: 1.17.1(hono@4.8.5)
+      '@repo/proto':
+        specifier: workspace:*
+        version: link:../../packages/proto
+      hono:
+        specifier: ^4.8.4
+        version: 4.8.5
+    devDependencies:
+      '@types/node':
+        specifier: ^20.11.17
+        version: 20.19.9
+      openapi-typescript:
+        specifier: ^7.8.0
+        version: 7.8.0(typescript@5.8.3)
+      tsx:
+        specifier: ^4.7.1
+        version: 4.20.3
+      typescript:
+        specifier: ^5.8.3
+        version: 5.8.3
 
 packages:
 
@@ -4131,6 +4166,11 @@ packages:
     peerDependencies:
       react: '>=16.8.0'
 
+  react-dom@18.3.1:
+    resolution: {integrity: sha512-5m4nQKp+rZRb09LNH59GM4BxTh9251/ylbKIbpe7TpGxfJ+9kv6BLkLBXIjjspbgbnIBNqlI23tRnTWT0snUIw==}
+    peerDependencies:
+      react: ^18.3.1
+
   react-dom@19.1.0:
     resolution: {integrity: sha512-Xs1hdnE+DyKgeHJeJznQmYMIBG3TKIHJJT95Q58nHLSrElKlGQqDTR2HQ9fx5CN/Gk6Vh/kupBTDLU11/nDk/g==}
     peerDependencies:
@@ -4267,6 +4307,10 @@ packages:
       react: ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
       react-dom: ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
 
+  react@18.3.1:
+    resolution: {integrity: sha512-wS+hAgJShR0KhEvPJArfuPVN1+Hz1t0Y6n5jLrGQbkb4urgPE/0Rve+1kMB1v/oWgHgm4WIcV+i7F2pTVj+2iQ==}
+    engines: {node: '>=0.10.0'}
+
   react@19.1.0:
     resolution: {integrity: sha512-FS+XFBNvn3GTAWq26joslQgWNoFu08F4kl0J4CgdNKADkdSGXQyTCnKteIAJy96Br6YbpEU1LSzV5dYtjMkMDg==}
     engines: {node: '>=0.10.0'}
@@ -4378,6 +4422,9 @@ packages:
 
   safer-buffer@2.1.2:
     resolution: {integrity: sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==}
+
+  scheduler@0.23.2:
+    resolution: {integrity: sha512-UOShsPwz7NrMUqhR6t0hWjFduvOzbtv7toDH1/hIrfRNIDBnnBWd0CwJTGvTpngVlmwGCdP9/Zl/tVrDqcuYzQ==}
 
   scheduler@0.26.0:
     resolution: {integrity: sha512-NlHwttCI/l5gCPR3D1nNXtWABUmBwvZpEQiD4IXSbIDq8BzLIK/7Ir5gTFSGZDUu37K5cMNp0hFtzO38sC7gWA==}
@@ -6380,9 +6427,9 @@ snapshots:
     dependencies:
       '@types/react': 19.1.8
 
-  '@types/react-virtualized-auto-sizer@1.0.8(react-dom@19.1.0(react@19.1.0))(react@19.1.0)':
+  '@types/react-virtualized-auto-sizer@1.0.8(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
-      react-virtualized-auto-sizer: 1.0.26(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      react-virtualized-auto-sizer: 1.0.26(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
     transitivePeerDependencies:
       - react
       - react-dom
@@ -6709,10 +6756,10 @@ snapshots:
 
   base64-js@1.5.1: {}
 
-  baseui@0.0.0-next-ff2e443(@types/react@19.1.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(styletron-react@6.1.1(react@19.1.0)):
+  baseui@0.0.0-next-ff2e443(@types/react@19.1.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styletron-react@6.1.1(react@18.3.1)):
     dependencies:
       '@date-io/date-fns': 2.17.0(date-fns@2.30.0)
-      '@types/react-virtualized-auto-sizer': 1.0.8(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      '@types/react-virtualized-auto-sizer': 1.0.8(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@types/react-window': 1.8.8
       card-validator: 6.2.0
       d3: 6.7.0
@@ -6724,21 +6771,21 @@ snapshots:
       mockdate: 3.0.5
       polished: 3.7.2
       popper.js: 1.16.1
-      react: 19.1.0
-      react-dom: 19.1.0(react@19.1.0)
-      react-dropzone: 9.0.0(react@19.1.0)
-      react-focus-lock: 2.13.6(@types/react@19.1.8)(react@19.1.0)
-      react-input-mask: 2.0.4(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+      react-dropzone: 9.0.0(react@18.3.1)
+      react-focus-lock: 2.13.6(@types/react@19.1.8)(react@18.3.1)
+      react-input-mask: 2.0.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react-is: 16.13.1
-      react-movable: 2.5.4(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      react-movable: 2.5.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react-multi-ref: 1.0.2
-      react-range: 1.10.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
-      react-uid: 2.4.0(@types/react@19.1.8)(react@19.1.0)
-      react-virtualized: 9.22.6(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
-      react-virtualized-auto-sizer: 1.0.26(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
-      react-window: 1.8.11(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      react-range: 1.10.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react-uid: 2.4.0(@types/react@19.1.8)(react@18.3.1)
+      react-virtualized: 9.22.6(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react-virtualized-auto-sizer: 1.0.26(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react-window: 1.8.11(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       resize-observer-polyfill: 1.5.1
-      styletron-react: 6.1.1(react@19.1.0)
+      styletron-react: 6.1.1(react@18.3.1)
     transitivePeerDependencies:
       - '@types/react'
 
@@ -8675,9 +8722,9 @@ snapshots:
 
   prismjs@1.30.0: {}
 
-  prop-types-extra@1.1.1(react@19.1.0):
+  prop-types-extra@1.1.1(react@18.3.1):
     dependencies:
-      react: 19.1.0
+      react: 18.3.1
       react-is: 16.13.1
       warning: 4.0.3
 
@@ -8730,10 +8777,10 @@ snapshots:
       minimist: 1.2.8
       strip-json-comments: 2.0.1
 
-  react-clientside-effect@1.2.8(react@19.1.0):
+  react-clientside-effect@1.2.8(react@18.3.1):
     dependencies:
       '@babel/runtime': 7.27.6
-      react: 19.1.0
+      react: 18.3.1
 
   react-day-picker@9.8.0(react@19.1.0):
     dependencies:
@@ -8742,28 +8789,34 @@ snapshots:
       date-fns-jalali: 4.1.0-0
       react: 19.1.0
 
+  react-dom@18.3.1(react@18.3.1):
+    dependencies:
+      loose-envify: 1.4.0
+      react: 18.3.1
+      scheduler: 0.23.2
+
   react-dom@19.1.0(react@19.1.0):
     dependencies:
       react: 19.1.0
       scheduler: 0.26.0
 
-  react-dropzone@9.0.0(react@19.1.0):
+  react-dropzone@9.0.0(react@18.3.1):
     dependencies:
       attr-accept: 1.1.3
       file-selector: 0.1.19
       prop-types: 15.8.1
-      prop-types-extra: 1.1.1(react@19.1.0)
-      react: 19.1.0
+      prop-types-extra: 1.1.1(react@18.3.1)
+      react: 18.3.1
 
-  react-focus-lock@2.13.6(@types/react@19.1.8)(react@19.1.0):
+  react-focus-lock@2.13.6(@types/react@19.1.8)(react@18.3.1):
     dependencies:
       '@babel/runtime': 7.27.6
       focus-lock: 1.3.6
       prop-types: 15.8.1
-      react: 19.1.0
-      react-clientside-effect: 1.2.8(react@19.1.0)
-      use-callback-ref: 1.3.3(@types/react@19.1.8)(react@19.1.0)
-      use-sidecar: 1.1.3(@types/react@19.1.8)(react@19.1.0)
+      react: 18.3.1
+      react-clientside-effect: 1.2.8(react@18.3.1)
+      use-callback-ref: 1.3.3(@types/react@19.1.8)(react@18.3.1)
+      use-sidecar: 1.1.3(@types/react@19.1.8)(react@18.3.1)
     optionalDependencies:
       '@types/react': 19.1.8
 
@@ -8771,11 +8824,11 @@ snapshots:
     dependencies:
       react: 19.1.0
 
-  react-input-mask@2.0.4(react-dom@19.1.0(react@19.1.0))(react@19.1.0):
+  react-input-mask@2.0.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
       invariant: 2.2.4
-      react: 19.1.0
-      react-dom: 19.1.0(react@19.1.0)
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
       warning: 4.0.3
 
   react-is@16.13.1: {}
@@ -8784,10 +8837,10 @@ snapshots:
 
   react-lifecycles-compat@3.0.4: {}
 
-  react-movable@2.5.4(react-dom@19.1.0(react@19.1.0))(react@19.1.0):
+  react-movable@2.5.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
-      react: 19.1.0
-      react-dom: 19.1.0(react@19.1.0)
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
 
   react-multi-ref@1.0.2:
     dependencies:
@@ -8797,10 +8850,10 @@ snapshots:
     dependencies:
       fast-deep-equal: 2.0.1
 
-  react-range@1.10.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0):
+  react-range@1.10.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
-      react: 19.1.0
-      react-dom: 19.1.0(react@19.1.0)
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
 
   react-remove-scroll-bar@2.3.8(@types/react@19.1.8)(react@19.1.0):
     dependencies:
@@ -8851,35 +8904,39 @@ snapshots:
       react: 19.1.0
       react-dom: 19.1.0(react@19.1.0)
 
-  react-uid@2.4.0(@types/react@19.1.8)(react@19.1.0):
+  react-uid@2.4.0(@types/react@19.1.8)(react@18.3.1):
     dependencies:
-      react: 19.1.0
+      react: 18.3.1
       tslib: 2.8.1
     optionalDependencies:
       '@types/react': 19.1.8
 
-  react-virtualized-auto-sizer@1.0.26(react-dom@19.1.0(react@19.1.0))(react@19.1.0):
+  react-virtualized-auto-sizer@1.0.26(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
-      react: 19.1.0
-      react-dom: 19.1.0(react@19.1.0)
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
 
-  react-virtualized@9.22.6(react-dom@19.1.0(react@19.1.0))(react@19.1.0):
+  react-virtualized@9.22.6(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
       '@babel/runtime': 7.27.6
       clsx: 1.2.1
       dom-helpers: 5.2.1
       loose-envify: 1.4.0
       prop-types: 15.8.1
-      react: 19.1.0
-      react-dom: 19.1.0(react@19.1.0)
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
       react-lifecycles-compat: 3.0.4
 
-  react-window@1.8.11(react-dom@19.1.0(react@19.1.0))(react@19.1.0):
+  react-window@1.8.11(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
       '@babel/runtime': 7.27.6
       memoize-one: 5.2.1
-      react: 19.1.0
-      react-dom: 19.1.0(react@19.1.0)
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+
+  react@18.3.1:
+    dependencies:
+      loose-envify: 1.4.0
 
   react@19.1.0: {}
 
@@ -9013,6 +9070,10 @@ snapshots:
       is-regex: 1.2.1
 
   safer-buffer@2.1.2: {}
+
+  scheduler@0.23.2:
+    dependencies:
+      loose-envify: 1.4.0
 
   scheduler@0.26.0: {}
 
@@ -9249,10 +9310,10 @@ snapshots:
       inline-style-prefixer: 5.1.2
       styletron-standard: 3.1.0
 
-  styletron-react@6.1.1(react@19.1.0):
+  styletron-react@6.1.1(react@18.3.1):
     dependencies:
       prop-types: 15.8.1
-      react: 19.1.0
+      react: 18.3.1
       styletron-standard: 3.1.0
 
   styletron-standard@3.1.0:
@@ -9519,9 +9580,24 @@ snapshots:
     dependencies:
       punycode: 2.3.1
 
+  use-callback-ref@1.3.3(@types/react@19.1.8)(react@18.3.1):
+    dependencies:
+      react: 18.3.1
+      tslib: 2.8.1
+    optionalDependencies:
+      '@types/react': 19.1.8
+
   use-callback-ref@1.3.3(@types/react@19.1.8)(react@19.1.0):
     dependencies:
       react: 19.1.0
+      tslib: 2.8.1
+    optionalDependencies:
+      '@types/react': 19.1.8
+
+  use-sidecar@1.1.3(@types/react@19.1.8)(react@18.3.1):
+    dependencies:
+      detect-node-es: 1.1.0
+      react: 18.3.1
       tslib: 2.8.1
     optionalDependencies:
       '@types/react': 19.1.8
