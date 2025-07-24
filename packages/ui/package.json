@@ -7,9 +7,12 @@
         "typecheck": "tsc --noEmit --emitDeclarationOnly false"
     },
     "dependencies": {
-        "baseui": "^0.0.0-next-2113e1821",
+        "baseui": "0.0.0-next-ff2e443",
         "styletron-engine-monolithic": "^1.0.0",
         "styletron-react": "^6.1.1"
+    },
+    "devDependencies": {
+        "@repo/typescript-config": "workspace:*"
     },
     "peerDependencies": {
         "react": "^18.0.0",

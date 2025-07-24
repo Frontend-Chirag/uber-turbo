@@ -9,7 +9,7 @@
     },
     "dependencies": {
         "@hono/node-server": "^1.15.0",
-        "@repo/proto": "^0.0.1",
+        "@repo/proto": "workspace:*",
         "hono": "^4.8.4"
     },
     "devDependencies": {
