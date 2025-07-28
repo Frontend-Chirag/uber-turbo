@@ -466,9 +466,18 @@ importers:
 
   packages/proto:
     devDependencies:
+      '@grpc/grpc-js':
+        specifier: ^1.13.4
+        version: 1.13.4
+      '@grpc/proto-loader':
+        specifier: ^0.7.15
+        version: 0.7.15
       '@repo/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config
+      ts-proto:
+        specifier: ^2.7.5
+        version: 2.7.5
 
   packages/seo:
     dependencies:
@@ -519,6 +528,9 @@ importers:
       '@repo/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config
+      '@types/node':
+        specifier: ^24.1.0
+        version: 24.1.0
       typescript:
         specifier: ^5.8.3
         version: 5.8.3

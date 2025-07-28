@@ -1,17 +1,33 @@
-import { AuthServiceService } from "@repo/proto/generated/auth.js";
+import { AuthServiceService, type AuthServiceServer } from "@repo/proto/generated/auth.js";
 import { Server, ServerCredentials } from "@grpc/grpc-js"
-import { authHandlers } from './client.js';
+import { authHandlers } from './handlers.js';
+import { AuthService } from "./handlers/auth-handler.js";
 
+const port = process.env.PORT || '50051';
 const server = new Server();
 
-server.addService(AuthServiceService, authHandlers)
+const AuthService = new AuthService();
 
-server.bindAsync("0.0.0.0:50051", ServerCredentials.createInsecure(), (err, port) => {
-    if (err) {
-        console.error("Failed to bind gRPC server:", err);
-        process.exit(1);
-      }
-    
-      console.log(`🟢 AuthService gRPC running at 0.0.0.0:${port}`);
-})
+const grpcService: AuthServiceServer = {
+  submit: (call, callback) => {
+    const { inAuthsessionId, nextUrl, flowType, screenAnswers } = call.request;
+
+  }
+}
+
+
+
+server.addService(AuthServiceService, grpcService)
+
+server.bindAsync(
+  `0.0.0.0:${port}`,
+  ServerCredentials.createInsecure(),
+  (error, port) => {
+    if (error) {
+      console.error('Failed to start Auth Service server:', error);
+      process.exit(1);
+    }
+    console.log(`Auth service running on port ${port}`);
+    server.start();
+  })
 

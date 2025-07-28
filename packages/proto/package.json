@@ -8,6 +8,9 @@
         "typecheck": "tsc --noEmit --emitDeclarationOnly false"
     },
     "devDependencies": {
-        "@repo/typescript-config": "workspace:*"
+        "@grpc/grpc-js": "^1.13.4",
+        "@grpc/proto-loader": "^0.7.15",
+        "@repo/typescript-config": "workspace:*",
+        "ts-proto": "^2.7.5"
     }
 }

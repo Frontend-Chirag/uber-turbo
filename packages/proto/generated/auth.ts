@@ -306,10 +306,17 @@ export function fieldTypeToJSON(object: FieldType): string {
   }
 }
 
-export interface AuthRequest {
-  inAuthSessionId: string;
+export interface SubmitRequest {
+  /** "INITIAL", "SIGN_UP", "LOGIN", etc. */
+  flowType: string;
+  inAuthsessionId: string;
   nextUrl: string;
-  screenAnswers: ScreenAnswers[];
+  screenAnswers: ScreenAnswers | undefined;
+}
+
+export interface SubmitResponse {
+  form?: AuthForm | undefined;
+  redirectUrl?: string | undefined;
 }
 
 export interface ScreenAnswers {
@@ -330,30 +337,19 @@ export interface FieldAnswers {
   phoneCountryCode?: string | undefined;
 }
 
-export interface AuthResponse {
-  success: boolean;
-  message: string;
-  data: AuthData | undefined;
-}
-
-export interface AuthData {
-  form?: AuthForm | undefined;
-  redirectUrl?: string | undefined;
-}
-
 export interface AuthForm {
   flowType: FlowType;
-  screens: AuthScreen | undefined;
+  screens: Screen | undefined;
   inAuthSessionId: string;
 }
 
-export interface AuthScreen {
+export interface Screen {
   screenType: ScreenType;
-  fields: AuthField[];
+  fields: Field[];
   eventType: EventType;
 }
 
-export interface AuthField {
+export interface Field {
   fieldType: FieldType;
   hintValue?: string | undefined;
   profileHint?: ProfileHint | undefined;
@@ -371,28 +367,31 @@ export interface GetAuthSessionRequest {
   sessionId: string;
 }
 
-function createBaseAuthRequest(): AuthRequest {
-  return { inAuthSessionId: "", nextUrl: "", screenAnswers: [] };
+function createBaseSubmitRequest(): SubmitRequest {
+  return { flowType: "", inAuthsessionId: "", nextUrl: "", screenAnswers: undefined };
 }
 
-export const AuthRequest: MessageFns<AuthRequest> = {
-  encode(message: AuthRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.inAuthSessionId !== "") {
-      writer.uint32(10).string(message.inAuthSessionId);
+export const SubmitRequest: MessageFns<SubmitRequest> = {
+  encode(message: SubmitRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.flowType !== "") {
+      writer.uint32(10).string(message.flowType);
+    }
+    if (message.inAuthsessionId !== "") {
+      writer.uint32(18).string(message.inAuthsessionId);
     }
     if (message.nextUrl !== "") {
-      writer.uint32(18).string(message.nextUrl);
+      writer.uint32(26).string(message.nextUrl);
     }
-    for (const v of message.screenAnswers) {
-      ScreenAnswers.encode(v!, writer.uint32(26).fork()).join();
+    if (message.screenAnswers !== undefined) {
+      ScreenAnswers.encode(message.screenAnswers, writer.uint32(34).fork()).join();
     }
     return writer;
   },
 
-  decode(input: BinaryReader | Uint8Array, length?: number): AuthRequest {
+  decode(input: BinaryReader | Uint8Array, length?: number): SubmitRequest {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     const end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseAuthRequest();
+    const message = createBaseSubmitRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -401,7 +400,7 @@ export const AuthRequest: MessageFns<AuthRequest> = {
             break;
           }
 
-          message.inAuthSessionId = reader.string();
+          message.flowType = reader.string();
           continue;
         }
         case 2: {
@@ -409,7 +408,7 @@ export const AuthRequest: MessageFns<AuthRequest> = {
             break;
           }
 
-          message.nextUrl = reader.string();
+          message.inAuthsessionId = reader.string();
           continue;
         }
         case 3: {
@@ -417,7 +416,15 @@ export const AuthRequest: MessageFns<AuthRequest> = {
             break;
           }
 
-          message.screenAnswers.push(ScreenAnswers.decode(reader, reader.uint32()));
+          message.nextUrl = reader.string();
+          continue;
+        }
+        case 4: {
+          if (tag !== 34) {
+            break;
+          }
+
+          message.screenAnswers = ScreenAnswers.decode(reader, reader.uint32());
           continue;
         }
       }
@@ -429,38 +436,119 @@ export const AuthRequest: MessageFns<AuthRequest> = {
     return message;
   },
 
-  fromJSON(object: any): AuthRequest {
+  fromJSON(object: any): SubmitRequest {
     return {
-      inAuthSessionId: isSet(object.inAuthSessionId) ? globalThis.String(object.inAuthSessionId) : "",
+      flowType: isSet(object.flowType) ? globalThis.String(object.flowType) : "",
+      inAuthsessionId: isSet(object.inAuthsessionId) ? globalThis.String(object.inAuthsessionId) : "",
       nextUrl: isSet(object.nextUrl) ? globalThis.String(object.nextUrl) : "",
-      screenAnswers: globalThis.Array.isArray(object?.screenAnswers)
-        ? object.screenAnswers.map((e: any) => ScreenAnswers.fromJSON(e))
-        : [],
+      screenAnswers: isSet(object.screenAnswers) ? ScreenAnswers.fromJSON(object.screenAnswers) : undefined,
     };
   },
 
-  toJSON(message: AuthRequest): unknown {
+  toJSON(message: SubmitRequest): unknown {
     const obj: any = {};
-    if (message.inAuthSessionId !== "") {
-      obj.inAuthSessionId = message.inAuthSessionId;
+    if (message.flowType !== "") {
+      obj.flowType = message.flowType;
+    }
+    if (message.inAuthsessionId !== "") {
+      obj.inAuthsessionId = message.inAuthsessionId;
     }
     if (message.nextUrl !== "") {
       obj.nextUrl = message.nextUrl;
     }
-    if (message.screenAnswers?.length) {
-      obj.screenAnswers = message.screenAnswers.map((e) => ScreenAnswers.toJSON(e));
+    if (message.screenAnswers !== undefined) {
+      obj.screenAnswers = ScreenAnswers.toJSON(message.screenAnswers);
     }
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<AuthRequest>, I>>(base?: I): AuthRequest {
-    return AuthRequest.fromPartial(base ?? ({} as any));
+  create<I extends Exact<DeepPartial<SubmitRequest>, I>>(base?: I): SubmitRequest {
+    return SubmitRequest.fromPartial(base ?? ({} as any));
   },
-  fromPartial<I extends Exact<DeepPartial<AuthRequest>, I>>(object: I): AuthRequest {
-    const message = createBaseAuthRequest();
-    message.inAuthSessionId = object.inAuthSessionId ?? "";
+  fromPartial<I extends Exact<DeepPartial<SubmitRequest>, I>>(object: I): SubmitRequest {
+    const message = createBaseSubmitRequest();
+    message.flowType = object.flowType ?? "";
+    message.inAuthsessionId = object.inAuthsessionId ?? "";
     message.nextUrl = object.nextUrl ?? "";
-    message.screenAnswers = object.screenAnswers?.map((e) => ScreenAnswers.fromPartial(e)) || [];
+    message.screenAnswers = (object.screenAnswers !== undefined && object.screenAnswers !== null)
+      ? ScreenAnswers.fromPartial(object.screenAnswers)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseSubmitResponse(): SubmitResponse {
+  return { form: undefined, redirectUrl: undefined };
+}
+
+export const SubmitResponse: MessageFns<SubmitResponse> = {
+  encode(message: SubmitResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.form !== undefined) {
+      AuthForm.encode(message.form, writer.uint32(10).fork()).join();
+    }
+    if (message.redirectUrl !== undefined) {
+      writer.uint32(18).string(message.redirectUrl);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SubmitResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSubmitResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.form = AuthForm.decode(reader, reader.uint32());
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.redirectUrl = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SubmitResponse {
+    return {
+      form: isSet(object.form) ? AuthForm.fromJSON(object.form) : undefined,
+      redirectUrl: isSet(object.redirectUrl) ? globalThis.String(object.redirectUrl) : undefined,
+    };
+  },
+
+  toJSON(message: SubmitResponse): unknown {
+    const obj: any = {};
+    if (message.form !== undefined) {
+      obj.form = AuthForm.toJSON(message.form);
+    }
+    if (message.redirectUrl !== undefined) {
+      obj.redirectUrl = message.redirectUrl;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SubmitResponse>, I>>(base?: I): SubmitResponse {
+    return SubmitResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SubmitResponse>, I>>(object: I): SubmitResponse {
+    const message = createBaseSubmitResponse();
+    message.form = (object.form !== undefined && object.form !== null) ? AuthForm.fromPartial(object.form) : undefined;
+    message.redirectUrl = object.redirectUrl ?? undefined;
     return message;
   },
 };
@@ -757,174 +845,6 @@ export const FieldAnswers: MessageFns<FieldAnswers> = {
   },
 };
 
-function createBaseAuthResponse(): AuthResponse {
-  return { success: false, message: "", data: undefined };
-}
-
-export const AuthResponse: MessageFns<AuthResponse> = {
-  encode(message: AuthResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.success !== false) {
-      writer.uint32(8).bool(message.success);
-    }
-    if (message.message !== "") {
-      writer.uint32(18).string(message.message);
-    }
-    if (message.data !== undefined) {
-      AuthData.encode(message.data, writer.uint32(26).fork()).join();
-    }
-    return writer;
-  },
-
-  decode(input: BinaryReader | Uint8Array, length?: number): AuthResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
-    const end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseAuthResponse();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1: {
-          if (tag !== 8) {
-            break;
-          }
-
-          message.success = reader.bool();
-          continue;
-        }
-        case 2: {
-          if (tag !== 18) {
-            break;
-          }
-
-          message.message = reader.string();
-          continue;
-        }
-        case 3: {
-          if (tag !== 26) {
-            break;
-          }
-
-          message.data = AuthData.decode(reader, reader.uint32());
-          continue;
-        }
-      }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
-      }
-      reader.skip(tag & 7);
-    }
-    return message;
-  },
-
-  fromJSON(object: any): AuthResponse {
-    return {
-      success: isSet(object.success) ? globalThis.Boolean(object.success) : false,
-      message: isSet(object.message) ? globalThis.String(object.message) : "",
-      data: isSet(object.data) ? AuthData.fromJSON(object.data) : undefined,
-    };
-  },
-
-  toJSON(message: AuthResponse): unknown {
-    const obj: any = {};
-    if (message.success !== false) {
-      obj.success = message.success;
-    }
-    if (message.message !== "") {
-      obj.message = message.message;
-    }
-    if (message.data !== undefined) {
-      obj.data = AuthData.toJSON(message.data);
-    }
-    return obj;
-  },
-
-  create<I extends Exact<DeepPartial<AuthResponse>, I>>(base?: I): AuthResponse {
-    return AuthResponse.fromPartial(base ?? ({} as any));
-  },
-  fromPartial<I extends Exact<DeepPartial<AuthResponse>, I>>(object: I): AuthResponse {
-    const message = createBaseAuthResponse();
-    message.success = object.success ?? false;
-    message.message = object.message ?? "";
-    message.data = (object.data !== undefined && object.data !== null) ? AuthData.fromPartial(object.data) : undefined;
-    return message;
-  },
-};
-
-function createBaseAuthData(): AuthData {
-  return { form: undefined, redirectUrl: undefined };
-}
-
-export const AuthData: MessageFns<AuthData> = {
-  encode(message: AuthData, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.form !== undefined) {
-      AuthForm.encode(message.form, writer.uint32(10).fork()).join();
-    }
-    if (message.redirectUrl !== undefined) {
-      writer.uint32(18).string(message.redirectUrl);
-    }
-    return writer;
-  },
-
-  decode(input: BinaryReader | Uint8Array, length?: number): AuthData {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
-    const end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseAuthData();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1: {
-          if (tag !== 10) {
-            break;
-          }
-
-          message.form = AuthForm.decode(reader, reader.uint32());
-          continue;
-        }
-        case 2: {
-          if (tag !== 18) {
-            break;
-          }
-
-          message.redirectUrl = reader.string();
-          continue;
-        }
-      }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
-      }
-      reader.skip(tag & 7);
-    }
-    return message;
-  },
-
-  fromJSON(object: any): AuthData {
-    return {
-      form: isSet(object.form) ? AuthForm.fromJSON(object.form) : undefined,
-      redirectUrl: isSet(object.redirectUrl) ? globalThis.String(object.redirectUrl) : undefined,
-    };
-  },
-
-  toJSON(message: AuthData): unknown {
-    const obj: any = {};
-    if (message.form !== undefined) {
-      obj.form = AuthForm.toJSON(message.form);
-    }
-    if (message.redirectUrl !== undefined) {
-      obj.redirectUrl = message.redirectUrl;
-    }
-    return obj;
-  },
-
-  create<I extends Exact<DeepPartial<AuthData>, I>>(base?: I): AuthData {
-    return AuthData.fromPartial(base ?? ({} as any));
-  },
-  fromPartial<I extends Exact<DeepPartial<AuthData>, I>>(object: I): AuthData {
-    const message = createBaseAuthData();
-    message.form = (object.form !== undefined && object.form !== null) ? AuthForm.fromPartial(object.form) : undefined;
-    message.redirectUrl = object.redirectUrl ?? undefined;
-    return message;
-  },
-};
-
 function createBaseAuthForm(): AuthForm {
   return { flowType: 0, screens: undefined, inAuthSessionId: "" };
 }
@@ -935,7 +855,7 @@ export const AuthForm: MessageFns<AuthForm> = {
       writer.uint32(8).int32(message.flowType);
     }
     if (message.screens !== undefined) {
-      AuthScreen.encode(message.screens, writer.uint32(18).fork()).join();
+      Screen.encode(message.screens, writer.uint32(18).fork()).join();
     }
     if (message.inAuthSessionId !== "") {
       writer.uint32(26).string(message.inAuthSessionId);
@@ -963,7 +883,7 @@ export const AuthForm: MessageFns<AuthForm> = {
             break;
           }
 
-          message.screens = AuthScreen.decode(reader, reader.uint32());
+          message.screens = Screen.decode(reader, reader.uint32());
           continue;
         }
         case 3: {
@@ -986,7 +906,7 @@ export const AuthForm: MessageFns<AuthForm> = {
   fromJSON(object: any): AuthForm {
     return {
       flowType: isSet(object.flowType) ? flowTypeFromJSON(object.flowType) : 0,
-      screens: isSet(object.screens) ? AuthScreen.fromJSON(object.screens) : undefined,
+      screens: isSet(object.screens) ? Screen.fromJSON(object.screens) : undefined,
       inAuthSessionId: isSet(object.inAuthSessionId) ? globalThis.String(object.inAuthSessionId) : "",
     };
   },
@@ -997,7 +917,7 @@ export const AuthForm: MessageFns<AuthForm> = {
       obj.flowType = flowTypeToJSON(message.flowType);
     }
     if (message.screens !== undefined) {
-      obj.screens = AuthScreen.toJSON(message.screens);
+      obj.screens = Screen.toJSON(message.screens);
     }
     if (message.inAuthSessionId !== "") {
       obj.inAuthSessionId = message.inAuthSessionId;
@@ -1012,24 +932,24 @@ export const AuthForm: MessageFns<AuthForm> = {
     const message = createBaseAuthForm();
     message.flowType = object.flowType ?? 0;
     message.screens = (object.screens !== undefined && object.screens !== null)
-      ? AuthScreen.fromPartial(object.screens)
+      ? Screen.fromPartial(object.screens)
       : undefined;
     message.inAuthSessionId = object.inAuthSessionId ?? "";
     return message;
   },
 };
 
-function createBaseAuthScreen(): AuthScreen {
+function createBaseScreen(): Screen {
   return { screenType: 0, fields: [], eventType: 0 };
 }
 
-export const AuthScreen: MessageFns<AuthScreen> = {
-  encode(message: AuthScreen, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+export const Screen: MessageFns<Screen> = {
+  encode(message: Screen, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
     if (message.screenType !== 0) {
       writer.uint32(8).int32(message.screenType);
     }
     for (const v of message.fields) {
-      AuthField.encode(v!, writer.uint32(18).fork()).join();
+      Field.encode(v!, writer.uint32(18).fork()).join();
     }
     if (message.eventType !== 0) {
       writer.uint32(24).int32(message.eventType);
@@ -1037,10 +957,10 @@ export const AuthScreen: MessageFns<AuthScreen> = {
     return writer;
   },
 
-  decode(input: BinaryReader | Uint8Array, length?: number): AuthScreen {
+  decode(input: BinaryReader | Uint8Array, length?: number): Screen {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     const end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseAuthScreen();
+    const message = createBaseScreen();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -1057,7 +977,7 @@ export const AuthScreen: MessageFns<AuthScreen> = {
             break;
           }
 
-          message.fields.push(AuthField.decode(reader, reader.uint32()));
+          message.fields.push(Field.decode(reader, reader.uint32()));
           continue;
         }
         case 3: {
@@ -1077,21 +997,21 @@ export const AuthScreen: MessageFns<AuthScreen> = {
     return message;
   },
 
-  fromJSON(object: any): AuthScreen {
+  fromJSON(object: any): Screen {
     return {
       screenType: isSet(object.screenType) ? screenTypeFromJSON(object.screenType) : 0,
-      fields: globalThis.Array.isArray(object?.fields) ? object.fields.map((e: any) => AuthField.fromJSON(e)) : [],
+      fields: globalThis.Array.isArray(object?.fields) ? object.fields.map((e: any) => Field.fromJSON(e)) : [],
       eventType: isSet(object.eventType) ? eventTypeFromJSON(object.eventType) : 0,
     };
   },
 
-  toJSON(message: AuthScreen): unknown {
+  toJSON(message: Screen): unknown {
     const obj: any = {};
     if (message.screenType !== 0) {
       obj.screenType = screenTypeToJSON(message.screenType);
     }
     if (message.fields?.length) {
-      obj.fields = message.fields.map((e) => AuthField.toJSON(e));
+      obj.fields = message.fields.map((e) => Field.toJSON(e));
     }
     if (message.eventType !== 0) {
       obj.eventType = eventTypeToJSON(message.eventType);
@@ -1099,24 +1019,24 @@ export const AuthScreen: MessageFns<AuthScreen> = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<AuthScreen>, I>>(base?: I): AuthScreen {
-    return AuthScreen.fromPartial(base ?? ({} as any));
+  create<I extends Exact<DeepPartial<Screen>, I>>(base?: I): Screen {
+    return Screen.fromPartial(base ?? ({} as any));
   },
-  fromPartial<I extends Exact<DeepPartial<AuthScreen>, I>>(object: I): AuthScreen {
-    const message = createBaseAuthScreen();
+  fromPartial<I extends Exact<DeepPartial<Screen>, I>>(object: I): Screen {
+    const message = createBaseScreen();
     message.screenType = object.screenType ?? 0;
-    message.fields = object.fields?.map((e) => AuthField.fromPartial(e)) || [];
+    message.fields = object.fields?.map((e) => Field.fromPartial(e)) || [];
     message.eventType = object.eventType ?? 0;
     return message;
   },
 };
 
-function createBaseAuthField(): AuthField {
+function createBaseField(): Field {
   return { fieldType: 0, hintValue: undefined, profileHint: undefined, otpWidth: undefined };
 }
 
-export const AuthField: MessageFns<AuthField> = {
-  encode(message: AuthField, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+export const Field: MessageFns<Field> = {
+  encode(message: Field, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
     if (message.fieldType !== 0) {
       writer.uint32(8).int32(message.fieldType);
     }
@@ -1132,10 +1052,10 @@ export const AuthField: MessageFns<AuthField> = {
     return writer;
   },
 
-  decode(input: BinaryReader | Uint8Array, length?: number): AuthField {
+  decode(input: BinaryReader | Uint8Array, length?: number): Field {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     const end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseAuthField();
+    const message = createBaseField();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -1180,7 +1100,7 @@ export const AuthField: MessageFns<AuthField> = {
     return message;
   },
 
-  fromJSON(object: any): AuthField {
+  fromJSON(object: any): Field {
     return {
       fieldType: isSet(object.fieldType) ? fieldTypeFromJSON(object.fieldType) : 0,
       hintValue: isSet(object.hintValue) ? globalThis.String(object.hintValue) : undefined,
@@ -1189,7 +1109,7 @@ export const AuthField: MessageFns<AuthField> = {
     };
   },
 
-  toJSON(message: AuthField): unknown {
+  toJSON(message: Field): unknown {
     const obj: any = {};
     if (message.fieldType !== 0) {
       obj.fieldType = fieldTypeToJSON(message.fieldType);
@@ -1206,11 +1126,11 @@ export const AuthField: MessageFns<AuthField> = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<AuthField>, I>>(base?: I): AuthField {
-    return AuthField.fromPartial(base ?? ({} as any));
+  create<I extends Exact<DeepPartial<Field>, I>>(base?: I): Field {
+    return Field.fromPartial(base ?? ({} as any));
   },
-  fromPartial<I extends Exact<DeepPartial<AuthField>, I>>(object: I): AuthField {
-    const message = createBaseAuthField();
+  fromPartial<I extends Exact<DeepPartial<Field>, I>>(object: I): Field {
+    const message = createBaseField();
     message.fieldType = object.fieldType ?? 0;
     message.hintValue = object.hintValue ?? undefined;
     message.profileHint = (object.profileHint !== undefined && object.profileHint !== null)
@@ -1389,62 +1309,39 @@ export const GetAuthSessionRequest: MessageFns<GetAuthSessionRequest> = {
 
 export type AuthServiceService = typeof AuthServiceService;
 export const AuthServiceService = {
-  submitAuth: {
-    path: "/auth.AuthService/SubmitAuth",
+  /** Single submit endpoint - all auth flows go through here */
+  submit: {
+    path: "/auth.AuthService/Submit",
     requestStream: false,
     responseStream: false,
-    requestSerialize: (value: AuthRequest): Buffer => Buffer.from(AuthRequest.encode(value).finish()),
-    requestDeserialize: (value: Buffer): AuthRequest => AuthRequest.decode(value),
-    responseSerialize: (value: AuthResponse): Buffer => Buffer.from(AuthResponse.encode(value).finish()),
-    responseDeserialize: (value: Buffer): AuthResponse => AuthResponse.decode(value),
-  },
-  getAuthSession: {
-    path: "/auth.AuthService/GetAuthSession",
-    requestStream: false,
-    responseStream: false,
-    requestSerialize: (value: GetAuthSessionRequest): Buffer =>
-      Buffer.from(GetAuthSessionRequest.encode(value).finish()),
-    requestDeserialize: (value: Buffer): GetAuthSessionRequest => GetAuthSessionRequest.decode(value),
-    responseSerialize: (value: AuthResponse): Buffer => Buffer.from(AuthResponse.encode(value).finish()),
-    responseDeserialize: (value: Buffer): AuthResponse => AuthResponse.decode(value),
+    requestSerialize: (value: SubmitRequest): Buffer => Buffer.from(SubmitRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer): SubmitRequest => SubmitRequest.decode(value),
+    responseSerialize: (value: SubmitResponse): Buffer => Buffer.from(SubmitResponse.encode(value).finish()),
+    responseDeserialize: (value: Buffer): SubmitResponse => SubmitResponse.decode(value),
   },
 } as const;
 
 export interface AuthServiceServer extends UntypedServiceImplementation {
-  submitAuth: handleUnaryCall<AuthRequest, AuthResponse>;
-  getAuthSession: handleUnaryCall<GetAuthSessionRequest, AuthResponse>;
+  /** Single submit endpoint - all auth flows go through here */
+  submit: handleUnaryCall<SubmitRequest, SubmitResponse>;
 }
 
 export interface AuthServiceClient extends Client {
-  submitAuth(
-    request: AuthRequest,
-    callback: (error: ServiceError | null, response: AuthResponse) => void,
+  /** Single submit endpoint - all auth flows go through here */
+  submit(
+    request: SubmitRequest,
+    callback: (error: ServiceError | null, response: SubmitResponse) => void,
   ): ClientUnaryCall;
-  submitAuth(
-    request: AuthRequest,
+  submit(
+    request: SubmitRequest,
     metadata: Metadata,
-    callback: (error: ServiceError | null, response: AuthResponse) => void,
+    callback: (error: ServiceError | null, response: SubmitResponse) => void,
   ): ClientUnaryCall;
-  submitAuth(
-    request: AuthRequest,
-    metadata: Metadata,
-    options: Partial<CallOptions>,
-    callback: (error: ServiceError | null, response: AuthResponse) => void,
-  ): ClientUnaryCall;
-  getAuthSession(
-    request: GetAuthSessionRequest,
-    callback: (error: ServiceError | null, response: AuthResponse) => void,
-  ): ClientUnaryCall;
-  getAuthSession(
-    request: GetAuthSessionRequest,
-    metadata: Metadata,
-    callback: (error: ServiceError | null, response: AuthResponse) => void,
-  ): ClientUnaryCall;
-  getAuthSession(
-    request: GetAuthSessionRequest,
+  submit(
+    request: SubmitRequest,
     metadata: Metadata,
     options: Partial<CallOptions>,
-    callback: (error: ServiceError | null, response: AuthResponse) => void,
+    callback: (error: ServiceError | null, response: SubmitResponse) => void,
   ): ClientUnaryCall;
 }
 

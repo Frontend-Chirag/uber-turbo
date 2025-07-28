@@ -2,16 +2,24 @@ syntax = "proto3";
 
 package auth;
 
+
 service AuthService {
-  rpc SubmitAuth (AuthRequest) returns (AuthResponse);
-  rpc GetAuthSession (GetAuthSessionRequest) returns (AuthResponse);
-  
+  // Single submit endpoint - all auth flows go through here
+  rpc Submit (SubmitRequest) returns (SubmitResponse);
 }
 
-message AuthRequest {
-  string inAuthSessionId = 1;
-  string nextUrl= 2;
-  repeated ScreenAnswers screenAnswers = 3 ;
+message SubmitRequest{
+  string flowType = 1;  // "INITIAL", "SIGN_UP", "LOGIN", etc.
+  string inAuthsessionId = 2;
+  string nextUrl = 3;
+  ScreenAnswers screenAnswers = 4;
+}
+
+message SubmitResponse {
+  oneof response {
+    AuthForm form = 1;
+    string redirect_url = 2;
+  };
 }
 
 message ScreenAnswers {
@@ -34,30 +42,20 @@ message FieldAnswers {
     }
 }
 
-message AuthResponse {
-  bool success = 1;
-  string message = 2;
-  AuthData data = 3;
-}
-
-message AuthData {
-    optional AuthForm form = 1;
-    optional string redirectUrl = 2;
-}
 
 message AuthForm {
   FlowType flowType = 1;
-  AuthScreen screens = 2;
+  Screen screens = 2;
   string inAuthSessionId = 3;
 }
 
-message AuthScreen {
+message Screen {
     ScreenType screenType = 1;
-    repeated AuthField fields = 2;
+    repeated Field fields = 2;
     EventType eventType = 3;
 }
 
-message AuthField {
+message Field {
     FieldType fieldType = 1;
     optional string hintValue = 2;
     optional ProfileHint profileHint = 3;
