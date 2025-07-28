@@ -1,0 +1,14 @@
+# apps/rider-web/.dockerignore
+.next/
+node_modules/
+.env.local
+.env.development
+.env.test
+coverage/
+.nyc_output
+*.log
+.DS_Store
+src/**/*.test.ts
+src/**/*.test.tsx
+src/**/*.spec.ts
+src/**/*.spec.tsx

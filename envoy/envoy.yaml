@@ -1,0 +1,3 @@
+yaml-language-server: $schema=https://raw.githubusercontent.com/envoyproxy/envoy/main/api/envoy/config/bootstrap/v3/bootstrap.proto.json
+
+admin

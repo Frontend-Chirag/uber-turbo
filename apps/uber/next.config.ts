@@ -1,12 +1,17 @@
 import type { NextConfig } from "next";
-import path from 'path';
 
 const nextConfig: NextConfig = {
   /* config options here */
   reactStrictMode: true,
-  outputFileTracingRoot: path.join(__dirname, "../../"),
   output: "standalone",
-  transpilePackages: ['@repo/ui'],
+  outputFileTracingExcludes: {
+    '*': [
+      'node_modules/@swc/core-linux-x64-gnu',
+      'node_modules/@swc/core-linux-x64-musl',
+      'node_modules/@esbuild/linux-x64',
+    ],
+  },
+  transpilePackages: ['@repo/design-system'],
 };
 
 

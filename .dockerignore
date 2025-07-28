@@ -1,9 +1,67 @@
-node_modules
-apps/uber/node_modules
-apps/uber-auth/node_modules
-packages/**/node_modules
-gateway/node_modules
-services/**/node_modules
-npm-debug.log
-.git
-docker
+# Dependencies
+node_modules/
+**/node_modules/
+.pnpm-store/
+
+# Build outputs
+.next/
+**/.next/
+dist/
+**/dist/
+build/
+**/build/
+
+# Development files
+.env.local
+.env.development
+.env.test
+**/.env.local
+**/.env.development
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# Testing
+coverage/
+**/coverage/
+.nyc_output
+
+# Temporary
+.tmp/
+temp/
+
+# Git
+.git/
+.gitignore
+
+# Documentation
+docs/
+README.md
+**/README.md
+
+# Docker
+Dockerfile*
+.dockerignore
+docker-compose*.yml
+
+# CI/CD
+.github/
+.gitlab-ci.yml
+.circleci/
+
+# Kubernetes
+k8s/
+**/k8s/

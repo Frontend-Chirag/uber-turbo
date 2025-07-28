@@ -10,15 +10,14 @@
     # pkgs.python311
     # pkgs.python311Packages.pip
     pkgs.nodejs_20
-    pkgs.zip
     pkgs.protoc-gen-grpc-web
     pkgs.protobuf
     pkgs.nginx
     pkgs.docker
     pkgs.docker-compose
     pkgs.turbo
-    pkgs.sudo
     pkgs.pnpm
+    pkgs.envoy
     # pkgs.nodePackages.nodemon
   ];
 
