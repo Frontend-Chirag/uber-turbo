@@ -1,14 +1,19 @@
+
+type NavigationItem = {
+    id: string;
+    title: string;
+    sublists?: NavigationItem[]
+}
+
 export type WebConfig = {
     meta: { title: string; description: string };
     header: {
-        fixed_navigation: {
-            id: string;
-            title: string;
-            sublists?:
-            | { id: string; title: string; sublists?: { id: string; title: string }[] }
-            | { id: string; title: string }[];
-        }[];
-        links: { sign_up: string; log_in: string; help: string };
+        fixed_navigation: NavigationItem[],
+        links: {
+            sign_up: string;
+            log_in: string;
+            help: string;
+        };
     };
     main: {
         title: string;
