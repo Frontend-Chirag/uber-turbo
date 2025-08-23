@@ -22,5 +22,10 @@
   "packageManager": "pnpm@9.0.0",
   "engines": {
     "node": ">=18"
+  },
+  "resolutions": {
+    "next": "15.4.1",
+    "react": "19.1.0",
+    "react-dom": "19.1.0"
   }
 }

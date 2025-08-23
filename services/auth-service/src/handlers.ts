@@ -1,22 +1,23 @@
 
-import { db } from "@/lib/db/prisma";
-import { cookies, headers } from 'next/headers';
-import { FlowType, ScreenType, EventType, FieldType } from "@/types";
-import { findEnumKey } from '@/lib/utils';
-import { sendOTPEmail } from "@/server/services/email";
-import { sendSMSMobile } from "@/server/services/sms";
-import { Role } from "@prisma/client";
-import { HTTP_ERRORS, HTTP_STATUS, HTTP_SUCCESS } from "@/lib/constants";
-import { getSessionManager } from "../../services/session/session-service";
-import { AuthSchema } from "@/validators/validate-server";
-import { z } from "zod";
-import { BaseResponse, BaseResponseBuilder } from "../response-builder";
-import { ContentfulStatusCode } from "hono/utils/http-status";
-import { geolocation } from "@/server/utils/geolocation";
+// import { db } from "@/lib/db/prisma";
+// import { cookies, headers } from 'next/headers';
+import { FlowType, ScreenType, EventType, FieldType, SubmitResponse, SubmitRequest } from "@repo/proto";
+// import { findEnumKey } from '@/lib/utils';
+// import { sendOTPEmail } from "@/server/services/email";
+// import { sendSMSMobile } from "@/server/services/sms";
+// import { Role } from "@prisma/client";
+// import { HTTP_ERRORS, HTTP_STATUS, HTTP_SUCCESS } from "@/lib/constants";
+// import { getSessionManager } from "../../services/session/session-service";
+// import { AuthSchema } from "@/validators/validate-server";
+// import { z } from "zod";
+// import { BaseResponse, BaseResponseBuilder } from "../response-builder";
+// import { ContentfulStatusCode } from "hono/utils/http-status";
+// import { geolocation } from "@/server/utils/geolocation";
 
 
-export const authUserSession = getSessionManager('AUTH_SESSION');
-export const userSession = getSessionManager('USER_SESSION');
+// export const authUserSession = getSessionManager('AUTH_SESSION');
+// export const userSession = getSessionManager('USER_SESSION');
+
 
 
 interface AuthHandlersProps {
@@ -87,6 +88,15 @@ type ScreenHandlers = Partial<Record<ScreenType, EventHandlers>>;
 type FlowHandlers = Partial<Record<FlowType, ScreenHandlers>>;
 
 type FieldAnswers = z.infer<typeof AuthSchema>['screenAnswers']['fieldAnswers'][number];
+
+export type InfoStatusCode = 100 | 101 | 102 | 103;
+export type SuccessStatusCode = 200 | 201 | 202 | 203 | 204 | 205 | 206 | 207 | 208 | 226;
+export type RedirectStatusCode = 300 | 301 | 302 | 303 | 304 | 307 | 308;
+export type ClientErrorStatusCode = 400 | 401 | 402 | 403 | 404 | 405 | 406 | 407 | 408 | 409 | 410 | 411 | 412 | 413 | 414 | 415 | 416 | 417 | 418 | 421 | 422 | 423 | 424 | 425 | 426 | 428 | 429 | 431 | 451;
+export type ServerErrorStatusCode = 500 | 501 | 502 | 503 | 504 | 505 | 506 | 507 | 508 | 510 | 511;
+
+export type StatusCode = InfoStatusCode | SuccessStatusCode | RedirectStatusCode | ClientErrorStatusCode | ServerErrorStatusCode | UnofficialStatusCode;
+
 
 
 export class AuthService {

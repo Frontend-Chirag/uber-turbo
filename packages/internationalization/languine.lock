@@ -1,8 +1,0 @@
-version: 1
-files:
-  dictionaries/en.json:
-    web.header.home: 8cf04a9734132302f96da8e113e80ce5
-    web.header.rider: 95116ecd84c8e4e43c29629b68775bbd
-    web.header.driver: 48cf24486d9a8e65a142b25682f19949
-    web.header.signIn: f2fdea440d768b85591e936a803c3631
-    web.header.login: 99dea78007133396a7b8ed70578ac6ae

@@ -1,4 +1,4 @@
-import { AuthServiceService, type AuthServiceServer } from "@repo/proto/generated/auth.js";
+b import { AuthServiceService, type AuthServiceServer } from "@repo/proto/generated/auth.js";
 import { Server, ServerCredentials } from "@grpc/grpc-js"
 import { authHandlers } from './handlers.js';
 import { AuthService } from "./handlers/auth-handler.js";

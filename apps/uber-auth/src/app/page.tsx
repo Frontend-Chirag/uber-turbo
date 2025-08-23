@@ -1,106 +1,105 @@
-"use client";
+"use client"
 
-import Image from "next/image";
+import { Navbar } from "@/components/nav-bar";
+import { Input } from "@repo/design-system/components/ui/input"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@repo/design-system/components/ui/tabs";
+import { StarRating } from "@repo/design-system/components/ui/star-rating";
+import { useState } from "react";
+import { PhoneInput } from "@repo/design-system/components/ui/phone-input";
+import { DatePicker } from "@repo/design-system/components/ui/date-picker";
+import { TimePicker } from "@repo/design-system/components/ui/time-picker";
+import { COUNTRIES } from "@repo/design-system/lib/constants";
+import {HeadingLevel, Heading} from "@repo/design-system/components/ui/heading-level";
 
 
 export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+  return (
+    <div className="min-h-screen w-full h-screen overflow-y-auto w- max-w-screen   bg-white  ">
+      <Navbar />
+
+      <div className="w-[540px] h-screen flex">
+      {/* <HeadingLevel>
+        <Heading>Base Web [L1]</Heading>
+        <HeadingLevel>
+          <Heading>Introduction [L2]</Heading>
+          <HeadingLevel>
+            <Heading>Quotes [L3]</Heading>
+            <HeadingLevel>
+              <Heading>Subtitle [L4]</Heading>
+              <HeadingLevel>
+                <Heading>Subtitle [L5]</Heading>
+                <HeadingLevel>
+                  <Heading>Subtitle [L6]</Heading>
+                </HeadingLevel>
+              </HeadingLevel>
+            </HeadingLevel>
+          </HeadingLevel>
+          <Heading>Motivation [L2]</Heading>
+        </HeadingLevel>
+      </HeadingLevel> */}
+
+<div className="mt-8 pt-8 border-t border-gray-200">
+        <HeadingLevel>
+          <Heading>Documentation</Heading>
+          <p className="mb-6 text-gray-700">
+            This demonstrates how the HeadingLevel context automatically manages heading hierarchy.
+          </p>
+          
+          <HeadingLevel>
+            <Heading>Getting Started</Heading>
+            <p className="mb-4 text-gray-600">
+              Each HeadingLevel increments the heading level for all nested Heading components.
+            </p>
+            
+            {/* Custom styleLevel override example - visual styling only */}
+            <Heading level={1}>Visual H1 Style (but semantic H3)</Heading>
+            <p className="mb-4 text-gray-600">
+              This heading uses level=1 prop for visual styling but maintains H3 semantics for accessibility.
+            </p>
+            
+            <HeadingLevel>
+              <Heading>Installation</Heading>
+              <p className="mb-4 text-gray-600">Basic installation steps would go here.</p>
+              
+              <HeadingLevel>
+                <Heading>Prerequisites</Heading>
+                <p className="mb-4 text-gray-600">Required dependencies and setup.</p>
+                
+                {/* Another custom styleLevel example */}
+                <Heading level={6}>Visual H6 Style (but semantic H5)</Heading>
+                <p className="mb-4 text-gray-600">
+                  This heading uses H6 visual styling but maintains proper H5 semantics.
+                </p>
+              </HeadingLevel>
+              
+              <HeadingLevel>
+                <Heading>Configuration</Heading>
+                <p className="mb-4 text-gray-600">How to configure the component.</p>
+              </HeadingLevel>
+            </HeadingLevel>
+            
+            <HeadingLevel>
+              <Heading>Usage Examples</Heading>
+              <p className="mb-4 text-gray-600">Code examples and best practices.</p>
+              
+              <Heading level={2}>Visual H2 Style (but semantic H4)</Heading>
+              <p className="mb-4 text-gray-600">
+                This demonstrates using level=2 for visual styling while maintaining semantic H4.
+              </p>
+            </HeadingLevel>
+          </HeadingLevel>
+          
+          <HeadingLevel>
+            <Heading>API Reference</Heading>
+            <p className="mb-4 text-gray-600">
+              Complete API documentation for the components.
+            </p>
+          </HeadingLevel>
+        </HeadingLevel>
+      </div>
+  
+      </div>
     </div>
   );
 }

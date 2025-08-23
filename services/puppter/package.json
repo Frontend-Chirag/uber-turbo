@@ -1,0 +1,19 @@
+{
+  "name": "puppter",
+  "version": "1.0.0",
+  "main": "srapper.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "keywords": [],
+  "description": "",
+  "dependencies": {
+    "cheerio": "^1.1.2",
+    "node-fetch": "^3.3.2",
+    "playwright": "^1.55.0",
+    "puppeteer": "^24.17.0"
+  }
+}

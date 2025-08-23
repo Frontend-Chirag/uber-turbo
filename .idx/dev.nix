@@ -10,6 +10,7 @@
     # pkgs.python311
     # pkgs.python311Packages.pip
     pkgs.nodejs_20
+    pkgs.sudo
     pkgs.protoc-gen-grpc-web
     pkgs.protobuf
     pkgs.nginx

@@ -1,0 +1,59 @@
+@font-face {
+    font-family: 'uber-bold';
+    src: url('./fonts/UberMove-Bold.eot');
+    src: local('./fonts/UberMoveBold'), local('./fonts/UberMove-Bold'),
+        url('./fonts/UberMove-Bold.eot?#iefix') format('embedded-opentype'),
+        url('./fonts/UberMove-Bold.woff2') format('woff2'),
+        url('./fonts/UberMove-Bold.woff') format('woff'),
+        url('./fonts/UberMove-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+
+@font-face {
+    font-family: 'uber-regular';
+    src: url('./fonts/UberMove-Regular.eot');
+    src: local('./fonts/UberMoveRegular'), local('./fonts/UberMove-Regular'),
+        url('./fonts/UberMove-Regular.eot?#iefix') format('embedded-opentype'),
+        url('./fonts/UberMove-Regular.woff2') format('woff2'),
+        url('./fonts/UberMove-Regular.woff') format('woff'),
+        url('./fonts/UberMove-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'uber-light';
+    src: url('./fonts/UberMove-Light.eot');
+    src: local('./fonts/UberMoveLight'), local('./fonts/UberMove-Light'),
+        url('./fonts/UberMove-Light.eot?#iefix') format('embedded-opentype'),
+        url('./fonts/UberMove-Light.woff2') format('woff2'),
+        url('./fonts/UberMove-Light.woff') format('woff'),
+        url('./fonts/UberMove-Light.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'uber-medium';
+    src: url('./fonts/UberMove-Medium.eot');
+    src: local('./fonts/UberMoveMedium'), local('./fonts/UberMove-Medium'),
+        url('./fonts/UberMove-Medium.eot?#iefix') format('embedded-opentype'),
+        url('./fonts/UberMove-Medium.woff2') format('woff2'),
+        url('./fonts/UberMove-Medium.woff') format('woff'),
+        url('./fonts/UberMove-Medium.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@theme {
+    --font-uber-light: "uber-light";
+    --font-uber-bold: "uber-bold";
+    --font-uber-regular: "uber-regular";
+    --font-uber-medium: "uber-medium";
+}
