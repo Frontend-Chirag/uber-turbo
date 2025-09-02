@@ -87,7 +87,7 @@ export function Input({
   const showClear = clearable && hasValue
 
   return (
-    <div className={cn("flex flex-col gap-1", rootClass)}>
+    <div className={cn("flex flex-col gap-1 ", rootClass)}>
       {label && !animatedLabel && <Label>{label}</Label>}
 
       <div
@@ -97,7 +97,7 @@ export function Input({
             "border-red-400": error,
             "border-green-400": positive,
             "border-black bg-white": isFocused && !error && !positive,
-            "border-white": !isFocused && !error && !positive,
+            "border-transparent": !isFocused && !error && !positive,
           },
           className,
           wrapperClass

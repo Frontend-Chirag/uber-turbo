@@ -8,7 +8,7 @@ interface HeadingLevelProps {
     children: React.ReactNode
 };
 
-interface HeadingProps {
+export interface HeadingProps {
     level?: 1 | 2 | 3 | 4 | 5 | 6;
     className?: string;
     children: React.ReactNode;
@@ -51,11 +51,10 @@ function Heading({ children, className, level: styleLevel }: HeadingProps) {
 
     // Tell TS this string is a valid JSX intrinsic element
     const Tag = (`h${level}`) as keyof React.JSX.IntrinsicElements;
-    const displayLevel = level;
 
-    const baseStyles = "font-uber-bold mb-4 text-gray-900";
+    const baseStyles = "font-uber-bold  text-black";
     const levelStyles: Record<number, string> = {
-        1: "text-4xl",
+        1: "text-3xl xl:text-4xl",
         2: "text-3xl",
         3: "text-2xl",
         4: "text-xl",
@@ -69,7 +68,6 @@ function Heading({ children, className, level: styleLevel }: HeadingProps) {
         <Tag className={`${baseStyles} ${sizeClass} ${className}`}>
             {children}
             <span className="text-sm text-gray-500 ml-2 font-normal">
-                [H{contextLevel}]{styleLevel ? ` styled as L${styleLevel}` : ` L${displayLevel}`}
             </span>
         </Tag>
     );

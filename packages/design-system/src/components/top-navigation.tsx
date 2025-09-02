@@ -55,7 +55,7 @@ function TopNavigationMenuItem({
     return (
         <li
             className={cn(
-                "self-center pl-4 first:pl-0",
+                "self-center",
                 className
             )}
             {...props}

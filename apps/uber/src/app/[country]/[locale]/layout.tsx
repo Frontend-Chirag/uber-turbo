@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
-import { DictonaryNames, getDictionary } from "@repo/internationalization";
-import { FixedHeader } from "@/components/headers/fixed-header";
+import "@repo/design-system/globals.css";
+import "@/app/globals.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,17 +32,18 @@ export default async function RootLayout({
 }: RootLayoutProperties) {
 
   const { country, locale } = await params;
-  const dictionary = await getDictionary(locale, DictonaryNames.uber);
+  // const dictionary = await getDictionary(locale, DictonaryNames.uber);
 
   return (
-    <html lang="en">
+    <html
+      lang={locale}
+      data-country={country}
+      data-locale={locale}
+    >
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <div className="w-full   flex flex-col relative">
-          <FixedHeader options={dictionary.web.header.fixed_navigation} />
+        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen`}
+        >
           {children}
-        </div>
       </body>
     </html>
   );
