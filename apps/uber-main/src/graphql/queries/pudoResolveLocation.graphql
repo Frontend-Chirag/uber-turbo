@@ -1,0 +1,31 @@
+query PudoResolveLocation(
+  $latitude: Float
+  $longitude: Float
+  $source: PudoSource
+  $includeAirportTerminals: Boolean
+  $includeRAPUStatus: Boolean
+  $includeTimezone: Boolean
+  $id: String
+  $provider: PudoProvider
+) {
+  pudoResolveLocation(
+    latitude: $latitude
+    longitude: $longitude
+    source: $source
+    includeAirportTerminals: $includeAirportTerminals
+    includeRAPUStatus: $includeRAPUStatus
+    includeTimezone: $includeTimezone
+    id: $id
+    provider: $provider
+  ) {
+    id
+    addressLine1
+    addressLine2
+    coordinate {
+      latitude
+      longitude
+    }
+    source
+    provider
+  }
+}

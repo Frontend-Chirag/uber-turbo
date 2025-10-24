@@ -24,11 +24,11 @@ const SelectVariants = cva(
   }
 )
 
-
 function Select({
   ...props
 }: React.ComponentProps<typeof SelectPrimitive.Root>) {
-  return <SelectPrimitive.Root data-slot="select" {...props} />
+
+  return  <SelectPrimitive.Root data-slot="select" {...props} />
 }
 
 function SelectGroup({
@@ -48,7 +48,9 @@ function SelectTrigger({
   size = "default",
   children,
   ...props
-}: React.ComponentProps<typeof SelectPrimitive.Trigger> & VariantProps<typeof SelectVariants>) {
+}: React.ComponentProps<typeof SelectPrimitive.Trigger> & VariantProps<typeof SelectVariants> & {
+
+}) {
   return (
     <SelectPrimitive.Trigger
       data-slot="select-trigger"
@@ -57,9 +59,9 @@ function SelectTrigger({
       {...props}
     >
       {children}
-      <SelectPrimitive.Icon asChild>
+      {/* <SelectPrimitive.Icon asChild>
         <ChevronDownIcon className="size-4 " />
-      </SelectPrimitive.Icon>
+      </SelectPrimitive.Icon> */}
     </SelectPrimitive.Trigger>
   )
 }

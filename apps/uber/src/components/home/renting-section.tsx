@@ -15,7 +15,7 @@ export const RentingSection = () => {
 
     return (
         <section className="flex  paddingX paddingY">
-            <div className='w-full  flex flex-col xl:flex-row mt-4 gap-x-8 '>
+            <div className='w-full  flex flex-col xl:flex-row-reverse mt-4 gap-x-8 '>
                 <div className='flex-1 flex flex-col'>
                     <AspectRatio ratio={12 / 12}>
                         <Image
@@ -29,7 +29,7 @@ export const RentingSection = () => {
                     </AspectRatio>
                 </div>
 
-                <div className='flex flex-col flex-1 justify-center item-start xl:items-end mt-8 xl:mt-0  '>
+                <div className='flex flex-col flex-1 justify-center item-start  mt-8 xl:mt-0  '>
                     <div className='max-w-[458px] flex flex-col gap-6'>
                         <Heading>
                             {section?.title}

@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react'
-import { Input } from './input'
+import { Input, InputProps } from './input'
 import { Popover, PopoverContent, PopoverTrigger } from './popover'
 import { HiClock } from 'react-icons/hi2'
 import { format, addMinutes, startOfMinute } from "date-fns";
@@ -24,45 +24,52 @@ function generateTimeSlots() {
 }
 
 interface TimePickerProps {
-    className?: string
+    triggerClassName?: string;   // for PopoverTrigger
+    inputProps?: InputProps;     // for Input customization
+    contentClassName?: string;
 }
 
-export const TimePicker = ({ className }: TimePickerProps) => {
+export const TimePicker = ({
+    triggerClassName,
+    inputProps,
+    contentClassName
+}: TimePickerProps) => {
+
     const [isOpen, setIsOpen] = useState<boolean>(false);
-    const [inputValue, setInputValue] = useState("")
-    const inputRef = useRef<HTMLInputElement>(null);
+    const [inputValue, setInputValue] = useState("Now")
     const handleOpenChange = (open: boolean) => {
         setIsOpen(open);
     }
 
-    const handleInputClick = () => {
-        setIsOpen(true);
-    }
+
 
     return (
         <Popover onOpenChange={handleOpenChange} open={isOpen}>
-            <PopoverTrigger className={cn(className)} >
+            <PopoverTrigger className={cn(triggerClassName)}>
                 <Input
-                    ref={inputRef}
                     value={inputValue}
-                    onClick={handleInputClick}
-                    placeholder="Now"
+                    onClick={() => setIsOpen(true)}
                     readOnly
-                    inputMode='none'
+                    inputMode="none"
                     autoFocus={isOpen}
-                    startEnhancer={<HiClock className='size-5 text-black' />}
-                    endEnhancer={<FaCaretDown className='size-5 text-black' />}
-                    className='cursor-pointer py-3'
-                    inputClass='cursor-pointer text-[18px] flex-1 placeholder:text-[18px] placeholder:text-neutral-400 font-uber-regular ml-1'
+                    overrides={{
+                        startEnhancer: inputProps?.overrides?.startEnhancer ?? <HiClock className="size-5 text-black" />,
+                        endEnhancer: inputProps?.overrides?.endEnhancer ?? <FaCaretDown className="size-5 text-black" />,
+                        inputClass: cn(
+                            "cursor-pointer text-[16px] flex-1 font-uber-regular ml-1",
+                            inputProps?.overrides?.inputClass
+                        )
+                    }}
+                    className={cn("cursor-pointer  py-3", inputProps?.className)}
+                    {...inputProps}
                 />
             </PopoverTrigger>
 
             <PopoverContent
-                onOpenAutoFocus={(e) => {
-                    e.preventDefault();
-                    inputRef?.current?.focus()
-                }}
-                className='w-38 bg-white  border-none outline-none px-0 rounded-lg shadow-[0_5px_15px_rgba(0,0,0,0.2)]'
+                className={cn(
+                    "w-38 bg-white border-none outline-none px-0 rounded-lg shadow-[0_5px_15px_rgba(0,0,0,0.2)]",
+                    contentClassName
+                )}
             >
                 <div className='flex flex-col max-h-[165px] overflow-y-auto'>
                     {generateTimeSlots().map((time) => (

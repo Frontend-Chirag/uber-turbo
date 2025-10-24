@@ -1,6 +1,7 @@
 "use client";
 
-import { Calendar1Icon, Clock3Icon, FaCalendar } from '@repo/design-system';
+import {  FaCalendar } from 'react-icons/fa';
+import {Clock3Icon,Calendar1Icon } from "lucide-react";
 import { Button } from '@repo/design-system/components/ui/button';
 import { DatePicker } from '@repo/design-system/components/ui/date-picker';
 import { Heading, HeadingLevel } from '@repo/design-system/components/ui/heading-level';

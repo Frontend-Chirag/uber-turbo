@@ -1,0 +1,29 @@
+{
+  "name": "place-service",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^24.5.2",
+    "prisma": "^6.11.1",
+    "tsx": "^4.7.1",
+    "typescript": "^5.9.2"
+  },
+  "dependencies": {
+    "@googlemaps/google-maps-services-js": "^3.4.2",
+    "@grpc/grpc-js": "^1.13.4",
+    "@prisma/client": "^6.11.1",
+    "@repo/proto": "workspace:^",
+    "@repo/typescript-config": "workspace:^"
+  }
+}

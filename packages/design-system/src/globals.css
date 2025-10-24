@@ -142,17 +142,6 @@
   }
 }
 
-/* This layer is added by shadcn/ui */
-@layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
-
-  body {
-    @apply bg-background text-white;
-  }
-}
-
 /* This layer is by next-forge */
 @layer base {
 

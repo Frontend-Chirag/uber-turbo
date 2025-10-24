@@ -5,7 +5,8 @@ import Link from 'next/link';
 
 import { SheetTrigger, Sheet, SheetContent, SheetTitle } from '@repo/design-system/components/ui/sheet';
 import { Button } from '@repo/design-system/components/ui/button';
-import { TbMenu, XIcon } from "@repo/design-system";
+import { XIcon } from "lucide-react";
+import { TbMenu } from "react-icons/tb"
 import { HomeConfig } from '@repo/internationalization/types';
 import { TreeLabel, TreeLabelProps, TreeNodeData, TreeView } from '@repo/design-system/components/ui/tree-view';
 import { Heading, HeadingLevel, HeadingProps } from '@repo/design-system/components/ui/heading-level';
@@ -67,7 +68,7 @@ const CustomLabel = React.memo<TreeNodeData>((node) => {
 const CustomTreeLabel = React.memo<TreeLabelProps>((props) => (
     <TreeLabel
         {...props}
-        label={(node) => <CustomLabel {...node}/>}
+        label={(node) => <CustomLabel {...node} />}
     />
 ));
 

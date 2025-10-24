@@ -5,7 +5,8 @@ import Image from 'next/image';
 import UberLogoWhite from '@repo/assets/icons/Uber_Logo_White_RGB.png';
 import { useTranslation } from "@repo/internationalization/localProvider";
 import { HeadingLevel, Heading } from '@repo/design-system/components/ui/heading-level';
-import { FaFacebook, FaInstagram, FaLinkedin, FaYoutube, FaXTwitter } from '@repo/design-system';
+import { FaFacebook, FaInstagram, FaLinkedin, FaYoutube } from 'react-icons/fa';
+import { FaXTwitter } from "react-icons/fa6";
 import { LocaleSwitcher } from '@/components/local-switcher';
 import { Link } from '@repo/design-system/components/ui/Link';
 

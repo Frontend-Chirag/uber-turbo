@@ -1,5 +1,6 @@
 "use client";
 
+import { cn } from '../../lib/utils';
 import React, { createContext, useContext } from 'react'
 
 const HeadingLevelContext = createContext(0);
@@ -54,7 +55,7 @@ function Heading({ children, className, level: styleLevel }: HeadingProps) {
 
     const baseStyles = "font-uber-bold  text-black";
     const levelStyles: Record<number, string> = {
-        1: "text-3xl xl:text-4xl",
+        1: "text-3xl ",
         2: "text-3xl",
         3: "text-2xl",
         4: "text-xl",
@@ -65,7 +66,7 @@ function Heading({ children, className, level: styleLevel }: HeadingProps) {
     const sizeClass = levelStyles[level] ?? levelStyles[1];
 
     return (
-        <Tag className={`${baseStyles} ${sizeClass} ${className}`}>
+        <Tag className={cn(baseStyles, sizeClass, className)}>
             {children}
             <span className="text-sm text-gray-500 ml-2 font-normal">
             </span>

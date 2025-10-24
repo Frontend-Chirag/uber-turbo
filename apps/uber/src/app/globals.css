@@ -1,8 +1,5 @@
 @import "tailwindcss";
-@source "../**/*.{ts,tsx}";
-@source "../../**/*.{ts,tsx}";
-@source "../../*.{ts,tsx}";
-@source "../../**/**/*.{ts,tsx}";
+@import "@repo/design-system/globals.css";
 
 .paddingX {
     @apply  px-6 lg:px-12 xl:px-24

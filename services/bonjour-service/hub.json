@@ -1,0 +1,227 @@
+{
+    "status": "success",
+    "data": {
+        "hub": {
+            "steps": [
+                {
+                    "stepUUID": "2cc747bd-eac8-54d3-8fa2-fb168bf9842a",
+                    "status": {
+                        "id": "on_hold"
+                    },
+                    "display": {
+                        "title": "Aadhaar Card",
+                        "subtitle": "Needs attention",
+                        "body": null,
+                        "isBodyInline": false
+                    },
+                    "options": {
+                        "isRecommended": false,
+                        "isDisabled": false,
+                        "redirectURL": null,
+                        "isUpcoming": false,
+                        "isOptional": false
+                    },
+                    "id": "document",
+                    "onboardingFlowKey": null,
+                    "uuid": "4230bd99-1378-4c47-a792-7174a1358428",
+                    "onboardingFlowUUID": null
+                },
+                {
+                    "stepUUID": "a1b58a5a-89b2-58c6-82f7-43558836765f",
+                    "status": {
+                        "id": "not_started"
+                    },
+                    "display": {
+                        "title": "Driving License - Front",
+                        "subtitle": "Recommended next step",
+                        "body": null,
+                        "isBodyInline": false
+                    },
+                    "options": {
+                        "isRecommended": true,
+                        "isDisabled": false,
+                        "redirectURL": null,
+                        "isUpcoming": false,
+                        "isOptional": false
+                    },
+                    "id": "driversLicense",
+                    "onboardingFlowKey": null,
+                    "uuid": "dd41bb35-d7f7-486c-b350-525a2f7be90e",
+                    "onboardingFlowUUID": null
+                },
+                {
+                    "stepUUID": "3b1baaaa-6e66-596d-ab46-deee22e9f423",
+                    "status": {
+                        "id": "not_started"
+                    },
+                    "display": {
+                        "title": "Profile Picture",
+                        "subtitle": "",
+                        "body": null,
+                        "isBodyInline": false
+                    },
+                    "options": {
+                        "isRecommended": false,
+                        "isDisabled": false,
+                        "redirectURL": null,
+                        "isUpcoming": false,
+                        "isOptional": false
+                    },
+                    "id": "profilePhoto",
+                    "onboardingFlowKey": null,
+                    "uuid": "e91a250b-43f4-4c12-8347-7df9b2e60fdd",
+                    "onboardingFlowUUID": null
+                },
+                {
+                    "stepUUID": "92ad70ac-13da-5042-a00b-cfa30a7d92cf",
+                    "status": {
+                        "id": "not_started"
+                    },
+                    "display": {
+                        "title": "Registration Certificate (RC)",
+                        "subtitle": "",
+                        "body": null,
+                        "isBodyInline": false
+                    },
+                    "options": {
+                        "isRecommended": false,
+                        "isDisabled": false,
+                        "redirectURL": null,
+                        "isUpcoming": false,
+                        "isOptional": false
+                    },
+                    "id": "vehicleRegistration",
+                    "onboardingFlowKey": null,
+                    "uuid": "e4bbcfbd-7cda-4c1e-9c59-fe7aa8a1b885",
+                    "onboardingFlowUUID": null
+                },
+                {
+                    "stepUUID": "33cd92f4-7078-5d9d-9ac3-1533507655d5",
+                    "status": {
+                        "id": "not_started"
+                    },
+                    "display": {
+                        "title": "Vehicle Insurance",
+                        "subtitle": "",
+                        "body": null,
+                        "isBodyInline": false
+                    },
+                    "options": {
+                        "isRecommended": false,
+                        "isDisabled": false,
+                        "redirectURL": null,
+                        "isUpcoming": false,
+                        "isOptional": false
+                    },
+                    "id": "vehicleInsurance",
+                    "onboardingFlowKey": null,
+                    "uuid": "2ad510e3-e08c-4d44-aba7-e0f0e3b7cb05",
+                    "onboardingFlowUUID": null
+                },
+                {
+                    "stepUUID": "7f918f75-1419-5f6e-8bde-5b7caf840eb9",
+                    "status": {
+                        "id": "complete"
+                    },
+                    "display": {
+                        "title": "Preferred Language",
+                        "subtitle": "Completed",
+                        "body": null,
+                        "isBodyInline": false
+                    },
+                    "options": {
+                        "isRecommended": false,
+                        "isDisabled": true,
+                        "redirectURL": null,
+                        "isUpcoming": false,
+                        "isOptional": false
+                    },
+                    "id": "language",
+                    "onboardingFlowKey": null,
+                    "uuid": "a2e4004b-d9b3-4329-8512-6883b999101f",
+                    "onboardingFlowUUID": null
+                }
+            ],
+            "prerequisiteStepUUID": null,
+            "ctas": [],
+            "parameters": [],
+            "guaranteeDisplay": null,
+            "currentRegionAndGigs": null,
+            "modals": [
+                {
+                    "type": "signupChoicesModal",
+                    "signupChoicesModal": {
+                        "ctas": [
+                            {
+                                "kind": "primary",
+                                "meta": {
+                                    "type": "updateRouteCTAMetadata",
+                                    "updateRouteCTAMetadata": {
+                                        "route": "step/id/territoryChange",
+                                        "routeType": "",
+                                        "exactPath": false
+                                    }
+                                },
+                                "text": "Change",
+                                "type": "updateRoute",
+                                "isInline": false
+                            },
+                            {
+                                "kind": "",
+                                "meta": {
+                                    "type": "performActionCTAMetadata",
+                                    "performActionCTAMetadata": {
+                                        "actionType": "changeVehicle"
+                                    }
+                                },
+                                "text": "",
+                                "type": "performAction",
+                                "isInline": false
+                            }
+                        ],
+                        "earningOpportunities": [
+                            {
+                                "kind": "rides",
+                                "text": "Rides"
+                            }
+                        ],
+                        "locationTitle": "Delhi NCR",
+                        "onboardingRegion": "Can earn in: All of Delhi",
+                        "vehicleLabel": null,
+                        "vehicleParagraph": null,
+                        "vehicleUUID": null
+                    }
+                }
+            ],
+            "header": {
+                "label": "Signing up for",
+                "delimitedText": [
+                    "Delhi NCR",
+                    "Rides"
+                ],
+                "delimiter": "•",
+                "iconURLs": [
+                    "https://d1a3f4spazzrp4.cloudfront.net/web-onboarding/images/car.svg"
+                ],
+                "ctas": [
+                    {
+                        "kind": "",
+                        "meta": {
+                            "type": "showModalCTAMetadata",
+                            "showModalCTAMetadata": {
+                                "modalID": "signupChoicesModal"
+                            }
+                        },
+                        "text": "",
+                        "type": "showModal",
+                        "isInline": false
+                    }
+                ],
+                "iconLabel": null,
+                "title": null,
+                "vehicleUUID": null
+            },
+            "prerequisite": null
+        }
+    }
+}

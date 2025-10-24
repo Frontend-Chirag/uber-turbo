@@ -15,7 +15,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuPortal, DropdownMenuSub,
 import { useTranslation } from '@repo/internationalization/localProvider';
 import { Skeleton } from '@repo/design-system/components/ui/skeleton';
 import { LocaleSwitcher } from '@/components/local-switcher';
-import { ChevronDown } from '@repo/design-system';
+import { ChevronDown } from 'lucide-react';
 import { SheetNav } from './sheet-nav';
 
 
@@ -110,7 +110,6 @@ interface NavbarProps {
 export const Navbar = ({ locale, country }: NavbarProps) => {
 
     const { dictionary, isLoading } = useTranslation('(home)');
-
     const {
         header: {
             navigation = [],
@@ -120,10 +119,18 @@ export const Navbar = ({ locale, country }: NavbarProps) => {
         } = {}
     } = dictionary || {};
 
+    const rideLink = (): string => {
+        if (typeof window !== "undefined") {
+            const currentUrl = window.location.href.replace(/\/$/, "");
+            return `https://3001-firebase-uber-turbo-1752158087388.cluster-ubrd2huk7jh6otbgyei4h62ope.cloudworkstations.dev/go/home/?next_url=${encodeURIComponent(currentUrl)}`;
+        }
+        return "";
+    };
+
 
     const options = navigation.map((option) => ({
         ...option,
-        href: `/${country}/${locale}/${option.id}`
+        href:  option.title === 'Ride' ? rideLink() : `/${country}/${locale}/${option.id}`
     }));
 
     return (

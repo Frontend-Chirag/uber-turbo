@@ -1,6 +1,7 @@
 "use client";
 
-import { FaTimes, Globe } from '@repo/design-system';
+import { FaTimes } from 'react-icons/fa';
+import { Globe } from "lucide-react";
 import { Button } from '@repo/design-system/components/ui/button';
 import { Heading, HeadingLevel } from '@repo/design-system/components/ui/heading-level';
 import { Sheet, SheetClose, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@repo/design-system/components/ui/sheet';

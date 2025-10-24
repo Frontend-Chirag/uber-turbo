@@ -8,13 +8,13 @@ import { Label } from "./label"
 import { cva, type VariantProps } from "class-variance-authority"
 
 const inputVariants = cva(
-  "flex gap-2 rounded-md border-2 bg-neutral-100 relative transition-all duration-200 ease-in-out group",
+  "font-uber-regular flex flex-1 gap-2 rounded-md border-2 bg-neutral-100 relative transition-all duration-200 ease-in-out group",
   {
     variants: {
       variant: {
         mini: "text-sm py-1 px-2",
-        compact: "text-sm px-1.5 py-3.5",
-        default: "text-base px-2.5 py-3.5",
+        compact: "text-sm px-1.5 py-2.5",
+        default: "text-[16px] px-2.5 py-2.5",
         large: "text-lg p-3.5",
       },
     },
@@ -22,9 +22,8 @@ const inputVariants = cva(
   }
 )
 
-interface InputProps
-  extends React.ComponentProps<"input">,
-  VariantProps<typeof inputVariants> {
+
+export interface Inputoverrides {
   clearable?: boolean
   startEnhancer?: React.ReactNode
   endEnhancer?: React.ReactNode
@@ -32,132 +31,129 @@ interface InputProps
   positive?: boolean
   label?: string
   animatedLabel?: boolean
-
-  onClear?: () => void;
   // Custom class overrides
   rootClass?: string
   wrapperClass?: string
   inputClass?: string
+  onClear?: () => void;
+};
+
+
+export interface InputProps extends React.ComponentProps<"input">, VariantProps<typeof inputVariants> {
+  overrides?: Inputoverrides;
 }
 
-export function Input({
-  className,
-  rootClass,
-  wrapperClass,
-  inputClass,
-  type,
-  clearable,
-  onClear,
-  startEnhancer,
-  endEnhancer,
-  value,
-  onChange,
-  error,
-  positive,
-  variant,
-  placeholder,
-  label,
-  animatedLabel,
-  ref,
-  ...props
-}: InputProps) {
-  const [internalValue, setInternalValue] = React.useState(value ?? "")
+export const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
   const [isFocused, setIsFocused] = React.useState(false)
-  const isControlled = value !== undefined
-  const val = isControlled ? value : internalValue
+  const [internalValue, setInterValue] = React.useState(props.value ?? '')
   const inputRef = React.useRef<HTMLInputElement | null>(null)
+  const isControlled = props.value !== undefined
+  const val = isControlled ? props.value : internalValue;
 
+  const combinedRef = React.useCallback((node: HTMLInputElement | null) => {
+    inputRef.current = node
+    if (typeof ref === 'function') {
+      ref(node)
+    } else if (ref) {
+      ref.current = node
+    }
+  }, [ref])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!isControlled) setInternalValue(e.target.value)
-    onChange?.(e)
+    if (!isControlled) setInterValue(e.target.value);
+    props.onChange?.(e)
   }
 
   const handleClear = () => {
-    if (!isControlled) setInternalValue("")
-    else
-      onChange?.({
-        target: { value: "" },
-      } as React.ChangeEvent<HTMLInputElement>)
-    onClear?.()
+    props.onChange?.({
+      target: { value: "" },
+    } as React.ChangeEvent<HTMLInputElement>)
+    props.overrides?.onClear?.()
     inputRef.current?.focus()
   }
 
   const hasValue = !!val
-  const showClear = clearable && hasValue
+  const showClear = props.overrides?.clearable && hasValue && isFocused
+
 
   return (
-    <div className={cn("flex flex-col gap-1 ", rootClass)}>
-      {label && !animatedLabel && <Label>{label}</Label>}
+    <div className={cn("flex flex-1 flex-col gap-1 ", props.overrides?.rootClass)}>
+      {props.overrides?.label && !props.overrides?.animatedLabel && <Label>{props.overrides?.label}</Label>}
 
       <div
         className={cn(
-          inputVariants({ variant }),
+          inputVariants({ variant: props.variant }),
           {
-            "border-red-400": error,
-            "border-green-400": positive,
-            "border-black bg-white": isFocused && !error && !positive,
-            "border-transparent": !isFocused && !error && !positive,
+            "border-red-400": props.overrides?.error,
+            "border-green-400": props.overrides?.positive,
+            "border-black bg-white": isFocused && !props.overrides?.error && !props.overrides?.positive,
+            "border-transparent": !isFocused && !props.overrides?.error && !props.overrides?.positive,
           },
-          className,
-          wrapperClass
+          props.className,
+          props.overrides?.wrapperClass,
+          ' cursor-text'
         )}
       >
-        {startEnhancer && (
-          <div className="flex items-center pointer-events-none">
-            {startEnhancer}
+        {props.overrides?.startEnhancer && (
+          <div className="flex items-center pointer-events-none relative ">
+            {props.overrides?.startEnhancer}
           </div>
         )}
 
         <div className="flex-1 relative">
-          {animatedLabel && (
+          {props.overrides?.animatedLabel && (
             <Label
               className={cn(
                 "absolute transition-all duration-200 ease-out font-light pointer-events-none",
                 isFocused || hasValue
                   ? "left-3 -top-full text-sm bg-white px-1 rounded"
                   : "left-3 top-1/2 -translate-y-1/2 text-base text-neutral-500",
-                error && (isFocused || hasValue) && "text-red-500",
-                positive && (isFocused || hasValue) && "text-green-500"
+                props.overrides?.error && (isFocused || hasValue) && "text-red-500",
+                props.overrides?.positive && (isFocused || hasValue) && "text-green-500"
               )}
             >
-              {label}
+              {props.overrides?.label}
             </Label>
           )}
           <input
-            ref={inputRef}
-            type={type}
+            ref={combinedRef}
             value={val}
-            onChange={handleChange}
+            {...props}
             onFocus={(e) => {
+              console.log("Input FOCUSED")
               setIsFocused(true)
+              props.onFocus?.(e)
             }}
             onBlur={(e) => {
               setIsFocused(false)
+              props.onBlur?.(e)
             }}
-            placeholder={animatedLabel ? "" : placeholder}
+            
+            onChange={handleChange}
+            placeholder={props.overrides?.animatedLabel ? "" : props.placeholder}
             className={cn(
-              "bg-transparent border-none outline-none text-black placeholder:text-sm placeholder:text-neutral-400 w-full",
-              inputClass
+              "bg-transparent border-none outline-none text-black placeholder:text-[16px] placeholder:text-neutral-400 w-full",
+              props.overrides?.inputClass
             )}
-            {...props}
           />
         </div>
 
-        {(showClear || endEnhancer) && (
+        {(showClear || props.overrides?.endEnhancer) && (
           <div className="flex items-center gap-1">
             {showClear && (
               <button
                 type="button"
-                onClick={handleClear}
-                aria-label="Clear input"
+                onMouseDown={(e) => {
+                  e.preventDefault(); // prevent blur
+                  handleClear();
+                }}
               >
                 <TiDelete className="size-4" />
               </button>
             )}
-            {!showClear && endEnhancer && (
+            {!showClear && props.overrides?.endEnhancer && (
               <div className="flex items-center pointer-events-none">
-                {endEnhancer}
+                {props.overrides?.endEnhancer}
               </div>
             )}
           </div>
@@ -165,4 +161,4 @@ export function Input({
       </div>
     </div>
   )
-}
+});

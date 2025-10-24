@@ -1,0 +1,19 @@
+{
+    "name": "@repo/maps",
+    "private": true,
+    "version": "0.0.1",
+    "scripts": {
+        "clean": "git clean -xdf .cache .turbo dist node_modules",
+        "typecheck": "tsc --noEmit --emitDeclarationOnly false"
+    },
+    "devDependencies": {
+        "@repo/typescript-config": "workspace:^",
+        "@types/node": "^24.3.1",
+        "@types/react": "^19.1.12",
+        "typescript": "^5.9.2"
+    },
+    "dependencies": {
+        "@vis.gl/react-google-maps": "^1.5.5",
+        "react": "19.1.0"
+    }
+}

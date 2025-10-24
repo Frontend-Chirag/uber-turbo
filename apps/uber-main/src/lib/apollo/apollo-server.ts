@@ -1,0 +1,18 @@
+import { ApolloServer } from "@apollo/server";
+import { startServerAndCreateNextHandler } from "@as-integrations/next";
+import { readFileSync } from "fs";
+import path from "path";
+import resolvers from "@/graphql/resolvers";
+
+// Read the schema
+const typeDefs = readFileSync(
+  path.join(process.cwd(), "src/graphql/schema/pudo.graphql"),
+  "utf8"
+);
+
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
+});
+
+export const handler = startServerAndCreateNextHandler(server);

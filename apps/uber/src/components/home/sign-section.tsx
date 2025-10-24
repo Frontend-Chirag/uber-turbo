@@ -20,7 +20,7 @@ export const SignupSection = () => {
 
     return (
         <section className="flex paddingX paddingY">
-            <div className='w-full  flex flex-col-reverse xl:flex-row gap-x-8 '>
+            <div className='w-full  flex flex-col-reverse xl:flex-row-reverse gap-x-8 '>
                 <div className='flex-1 flex flex-col mt-8 xl:mt-0'>
                     <AspectRatio ratio={12 / 12}>
                         <Image
@@ -34,7 +34,7 @@ export const SignupSection = () => {
                     </AspectRatio>
                 </div>
 
-                <div className='flex flex-col flex-1 justify-center items-end '>
+                <div className='flex flex-col flex-1 justify-center items-start '>
                     <div className='w-full xl:max-w-[458px] flex flex-col gap-6'>
                         <Heading>
                             {section?.title}

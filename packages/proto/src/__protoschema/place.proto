@@ -1,0 +1,167 @@
+syntax = "proto3";
+
+package place;
+
+// ============================================
+// Basic Types
+// ============================================
+
+message LatLng {
+    double latitude = 1;
+    double longitude = 2;
+}
+
+// ============================================
+// Raw Google Places API Response Structures
+// (Mirrors actual Google API responses)
+//// Update your proto file
+message RawPlace {
+    string place_id = 1;           // Keep as place_id (Google uses this)
+    string name = 2;
+    string formatted_address = 3;
+    repeated AddressComponent address_components = 4;  // Keep as address_components
+    repeated string types = 6;
+    PlusCode plus_code = 7;        // Keep as plus_code
+    
+    // Additional fields
+    string formatted_phone_number = 8;
+    string international_phone_number = 9;
+    string website = 10;
+    double rating = 11;
+    int32 user_ratings_total = 12;
+    OpeningHours opening_hours = 13;
+    repeated Photo photos = 14;
+    string business_status = 15;
+    string icon = 16;
+    string icon_background_color = 17;
+    string icon_mask_base_uri = 18;
+    string vicinity = 19;
+    int32 utc_offset = 20;
+    string adr_address = 21;
+}
+
+message AddressComponent {
+    string long_name = 1;    // Keep as long_name
+    string short_name = 2;   // Keep as short_name
+    repeated string types = 3;
+}
+
+message Location {
+    double lat = 1;  // Keep as lat
+    double lng = 2;  // Keep as lng
+}
+
+message PlusCode {
+    string global_code = 1;
+    string compound_code = 2;
+}
+
+message OpeningHours {
+    bool open_now = 1;
+    repeated string weekday_text = 2;
+}
+
+message Photo {
+    int32 height = 1;
+    int32 width = 2;
+    string photo_reference = 4;
+}
+// ============================================
+// Request/Response Messages
+// ============================================
+
+
+// Place Details
+message GetPlaceRequest {
+    LatLng location = 1;          // Required (message field)
+    string place_id = 2;          // Optional (string)
+    repeated string fields = 3;   // Optional array/list of strings
+  }
+  
+
+message GetPlaceResponse {
+    RawPlace result = 1;
+    string status = 3;
+}
+
+// Text Search
+message TextSearchRequest {
+    string query = 1;
+    LatLng location = 2;
+    int32 radius = 3;
+    string type = 4;           // Optional: restrict to specific type
+    int32 max_results = 5;     // How many results to return
+    string page_token = 6;     // For pagination
+}
+
+message TextSearchResponse {
+    repeated RawPlace results = 1;
+    string status = 2;
+    string next_page_token = 3;  // For pagination
+}
+
+// Nearby Search
+message NearbySearchRequest {
+    LatLng location = 1;
+    int32 radius = 2;
+    string keyword = 3;
+    string type = 4;
+    int32 max_results = 5;
+    string page_token = 6;
+}
+
+message NearbySearchResponse {
+    repeated RawPlace results = 1;
+    string status = 2;
+    string next_page_token = 3;
+}
+
+// Autocomplete
+message AutocompleteRequest {
+    string input = 1;
+    LatLng location = 2;
+    int32 radius = 3;
+    repeated string types = 4;
+}
+
+message AutocompletePrediction {
+    string description = 1;
+    string place_id = 2;
+    string reference = 3;
+    repeated string types = 4;
+    StructuredFormatting structured_formatting = 5;
+    repeated MatchedSubstring matched_substrings = 6;
+    repeated Term terms = 7;
+}
+
+message StructuredFormatting {
+    string main_text = 1;
+    repeated MatchedSubstring main_text_matched_substrings = 2;
+    string secondary_text = 3;
+}
+
+message MatchedSubstring {
+    int32 length = 1;
+    int32 offset = 2;
+}
+
+message Term {
+    int32 offset = 1;
+    string value = 2;
+}
+
+message AutocompleteResponse {
+    repeated AutocompletePrediction predictions = 1;
+    string status = 2;
+}
+
+// ============================================
+// Service Definition
+// ============================================
+
+service PlaceService {
+    rpc GetPlace (GetPlaceRequest) returns (GetPlaceResponse);
+    rpc TextSearch (TextSearchRequest) returns (TextSearchResponse);
+    rpc NearbySearch (NearbySearchRequest) returns (NearbySearchResponse);
+    rpc Autocomplete (AutocompleteRequest) returns (AutocompleteResponse);
+}

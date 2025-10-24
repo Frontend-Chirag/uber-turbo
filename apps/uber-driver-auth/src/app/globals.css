@@ -1,0 +1,9 @@
+@import "tailwindcss";
+@import "@repo/design-system/globals.css";
+
+
+.font-roboto {
+  font-family: var(--font-geist-roboto), sans-serif;
+}
+
+  
