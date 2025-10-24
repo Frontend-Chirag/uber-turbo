@@ -1,0 +1,124 @@
+syntax = "proto3";
+
+package auth;
+
+
+service AuthService {
+  // Single submit endpoint - all auth flows go through here
+  rpc Submit (SubmitRequest) returns (SubmitResponse);
+}
+
+message SubmitRequest{
+  string flowType = 1;  // "INITIAL", "SIGN_UP", "LOGIN", etc.
+  string inAuthsessionId = 2;
+  string nextUrl = 3;
+  ScreenAnswers screenAnswers = 4;
+}
+
+message SubmitResponse {
+  oneof response {
+    AuthForm form = 1;
+    string redirect_url = 2;
+  };
+}
+
+message ScreenAnswers {
+    ScreenType screenType =1;
+    EventType eventType = 2;
+    repeated FieldAnswers fieldAnswers = 3;
+}
+
+message FieldAnswers {
+    FieldType fieldType = 1;
+    oneof field_data {
+        string emailAddress = 2;
+        string phoneNumber = 3;
+        string otpCode = 4;
+        string password = 5;
+        string firstName = 6;
+        string lastName = 7;
+        bool agreeTerms = 8;
+        string phoneCountryCode = 9;
+    }
+}
+
+
+message AuthForm {
+  FlowType flowType = 1;
+  Screen screens = 2;
+  string inAuthSessionId = 3;
+}
+
+message Screen {
+    ScreenType screenType = 1;
+    repeated Field fields = 2;
+    EventType eventType = 3;
+}
+
+message Field {
+    FieldType fieldType = 1;
+    optional string hintValue = 2;
+    optional ProfileHint profileHint = 3;
+    optional int32 otpWidth = 4;
+}
+
+message ProfileHint {
+    string firstname = 1;
+    string lastname = 2;
+    string phonenumber = 3;
+    string email = 4;
+}
+
+
+
+ enum FlowType {
+    INITIAL = 0; // for initally submit form
+    SIGN_UP = 1; // to verify email or phone number via otp
+    PROGRESSIVE_SIGN_UP = 2; // optionally field for number or email
+    FINAL_SIGN_UP = 3;
+    LOGIN =5;
+}
+
+ enum ScreenType {
+    PHONE_NUMBER_INITIAL = 0;
+    EMAIL_ADDRESS_INITIAL = 1;
+    PHONE_OTP = 2;
+    EMAIL_OTP = 3;
+    PHONE_NUMBER_PROGRESSIVE = 4;
+    EMAIL_ADDRESS_PROGESSIVE = 5;
+    FIRST_NAME_LAST_NAME =6 ;
+    RESET_ACCOUNT = 7;
+    CONSENT = 8;
+    RESEND_OTP = 9;
+}
+
+
+ enum EventType {
+    TypeInputEmail = 0;
+    TypeInputExistingEmail = 1 ;
+    TypeInputExistingPhone = 2 ;
+    TypeInputMobile = 3 ;
+    TypeSMSOTP = 4 ;
+    TypeResetAccount = 5 ;
+    TypeEmailOTP = 6 ;
+    TypeInputDetails = 7 ;
+    TypeCheckBox = 8 ;
+}
+
+ enum FieldType {
+    PHONE_COUNTRY_CODE = 0;
+    PHONE_NUMBER = 1;
+    PHONE_SMS_OTP = 2;
+    EMAIL_ADDRESS = 3;
+    EMAIL_OTP_CODE = 4;
+    PASSWORD = 5;
+    FIRST_NAME = 6;
+    LAST_NAME = 7;
+    TERMS_AND_CONDITIONS = 8;
+}
+
+
+
+message GetAuthSessionRequest {
+  string sessionId = 1;
+}
